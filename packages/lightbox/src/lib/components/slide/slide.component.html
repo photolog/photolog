@@ -1,0 +1,21 @@
+<div
+  class="plg-slide-content"
+  [style.height.px]="height()"
+  [style.width.px]="width()"
+>
+  <!-- @if (state.loaded()) {
+  }
+   -->
+  <img
+    [src]="src()()"
+    [alt]="alt()"
+    fetchpriority="high"
+    loading="eager"
+    [style.height.px]="height()"
+    [style.width.px]="width()"
+  />
+
+  @if (loading()) {
+    <plg-progress-spinner @fade></plg-progress-spinner>
+  }
+</div>

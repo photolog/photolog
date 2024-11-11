@@ -1,1 +1,84 @@
-<app-nx-welcome></app-nx-welcome> <router-outlet></router-outlet>
+<!-- <nav>
+  <mat-toolbar>
+    <span>Photolog</span>
+  </mat-toolbar>
+</nav> -->
+<mat-sidenav-container autosize="">
+  <mat-sidenav
+    [opened]="sidenavOpened()"
+    [mode]="sidenavMode()"
+    fixedInViewport
+    fixedTopGap="0"
+    fixedBottomGap="0"
+  >
+    <mat-toolbar>
+      <span class="app-name encode-sans-semi-condensed-extrabold"
+        >Photolog</span
+      >
+    </mat-toolbar>
+
+    <section class="flex flex-col h-full flex-1 overflow-auto">
+      <section
+        class="nav-groups flex flex-col flex-1 gap-4 border-t border-gray-300 border-opacity-50"
+      >
+        @for (group of navItemGroups; track group.name) {
+          <mat-nav-list class="py-4">
+            <h3 mat-subheader class="opacity-80">{{ group.name }}</h3>
+            @for (link of group.items; track $index) {
+              <a
+                mat-list-item
+                [routerLink]="link.path"
+                routerLinkActive
+                #rla="routerLinkActive"
+                [queryParams]="link.queryParams"
+                [activated]="rla.isActive"
+                class="!rounded-l-none"
+                >{{ link.text }}</a
+              >
+            }
+          </mat-nav-list>
+        }
+      </section>
+
+      <section class="border-t border-gray-300 border-opacity-50 px-4 py-2">
+        <mat-nav-list class="additional-links">
+          <a
+            mat-list-item
+            href="https://github.com/photolog/photolog"
+            rel="noopener"
+            target="_blank"
+          >
+            <img matListItemIcon src="/img/github-mark.svg" alt="" />
+            <h3 matListItemTitle>GitHub</h3>
+          </a>
+        </mat-nav-list>
+      </section>
+
+      <footer class="border-t border-gray-300 border-opacity-50 p-4">
+        <p class="leading-[1rem] text-[0.8rem] opacity-75">
+          Images on this site are sourced from
+          <a
+            class="text-blue-600 font-medium"
+            href="https://unsplash.com"
+            target="_blank"
+            >Unsplash</a
+          >
+          via
+          <a
+            class="text-blue-600 font-medium"
+            href="https://picsum.photos"
+            target="_blank"
+            >Picsum</a
+          >
+          and remain the property of their respective owners. Used for
+          illustration-purposes only.
+        </p>
+      </footer>
+    </section>
+  </mat-sidenav>
+  <mat-sidenav-content>
+    <main class="pr-4 relative w-full h-full">
+      <router-outlet></router-outlet>
+    </main>
+  </mat-sidenav-content>
+</mat-sidenav-container>

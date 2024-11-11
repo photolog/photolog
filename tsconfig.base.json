@@ -14,7 +14,14 @@
     "skipLibCheck": true,
     "skipDefaultLibCheck": true,
     "baseUrl": ".",
-    "paths": {}
+    "paths": {
+      "@photolog/core": ["packages/core/src/index.ts"],
+      "@photolog/data-access-images": [
+        "packages/data-access-images/src/index.ts"
+      ],
+      "@photolog/layout": ["packages/layout/src/index.ts"],
+      "@photolog/lightbox": ["packages/lightbox/src/index.ts"]
+    }
   },
   "exclude": ["node_modules", "tmp"]
 }

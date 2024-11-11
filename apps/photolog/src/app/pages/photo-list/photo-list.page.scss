@@ -1,0 +1,24 @@
+.plg-image-list {
+  
+  a:focus-visible {
+    outline: none;
+  }
+  a:focus-visible::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    border: 5px solid #0072e2;
+    border-radius: 0;
+    box-sizing: border-box;
+    pointer-events: none;
+  }
+
+  img {
+    max-width: 100%;
+    height: 100%;
+    // object-fit: cover;
+  }
+}

@@ -1,0 +1,36 @@
+mat-sidenav,
+mat-sidenav mat-toolbar {
+  // background-color: #ebedef;
+}
+
+mat-sidenav {
+  --mdc-list-list-item-one-line-container-height: 32px;
+  --mdc-list-list-item-label-text-font: 'Roboto Flex', Roboto;
+  width: 256px;
+  border-radius: 0;
+  // z-index: 0 !important;
+
+  ::ng-deep .mat-drawer-inner-container {
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+  }
+
+  .additional-links {
+    --mdc-list-list-item-one-line-container-height: 40px;
+  }
+}
+
+mat-sidenav mat-toolbar {
+  // font-weight: 600;
+  //   font-family: 'Roboto';
+  flex: 0 0 auto;
+
+  .app-name {
+    font-size: 32px;
+  }
+}
+
+mat-sidenav .content {
+  flex: 1;
+}

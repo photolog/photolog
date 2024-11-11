@@ -1,0 +1,34 @@
+<plg-layout-viewport>
+  <plg-layout [height]="layoutHeight()">
+    @for (item of layoutItems(); track item.data.id) {
+      <plg-layout-item [geometry]="item.box" [plgViewTransition]="item.data.id">
+        <a
+          [routerLink]="['', 'photos', item.data.id]"
+          (click)="viewPhoto($event, item.data.id)"
+        >
+          @defer (on viewport) {
+            <img
+              [alt]=""
+              [src]="item.data.thumbnail.src"
+              [width]="item.box.width"
+              [height]="item.box.height"
+              fetchpriority="high"
+            />
+          } @placeholder {
+            <div
+              class="bg-gray-300"
+              [style.width.px]="item.box.width"
+              [style.height.px]="item.box.height"
+            ></div>
+          } @loading {
+            <div
+              class="bg-gray-300"
+              [style.width.px]="item.box.width"
+              [style.height.px]="item.box.height"
+            ></div>
+          }
+        </a>
+      </plg-layout-item>
+    }
+  </plg-layout>
+</plg-layout-viewport>

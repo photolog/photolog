@@ -1,5 +1,5 @@
 {
-  "name": "photolog",
+  "name": "playground",
   "$schema": "../../node_modules/nx/schemas/project-schema.json",
   "projectType": "application",
   "prefix": "app",
@@ -22,7 +22,10 @@
             "input": "apps/photolog/public"
           }
         ],
-        "styles": ["apps/photolog/src/styles.scss"],
+        "styles": [
+          "@angular/material/prebuilt-themes/azure-blue.css",
+          "apps/photolog/src/styles.scss"
+        ],
         "scripts": [],
         "server": "apps/photolog/src/main.server.ts",
         "prerender": true,
@@ -58,10 +61,10 @@
       "executor": "@angular-devkit/build-angular:dev-server",
       "configurations": {
         "production": {
-          "buildTarget": "photolog:build:production"
+          "buildTarget": "playground:build:production"
         },
         "development": {
-          "buildTarget": "photolog:build:development"
+          "buildTarget": "playground:build:development"
         }
       },
       "defaultConfiguration": "development"
@@ -69,7 +72,7 @@
     "extract-i18n": {
       "executor": "@angular-devkit/build-angular:extract-i18n",
       "options": {
-        "buildTarget": "photolog:build"
+        "buildTarget": "playground:build"
       }
     },
     "lint": {
@@ -85,7 +88,7 @@
     "serve-static": {
       "executor": "@nx/web:file-server",
       "options": {
-        "buildTarget": "photolog:build",
+        "buildTarget": "playground:build",
         "staticFilePath": "dist/apps/photolog/browser",
         "spa": true
       }

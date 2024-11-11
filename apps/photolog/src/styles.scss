@@ -1,1 +1,61 @@
-/* You can add global styles to this file, and also import other style files */
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+::view-transition-old(photolog-image),
+::view-transition-new(photolog-image) {
+  /* Prevent the default animation,
+  so both views remain opacity:1 throughout the transition */
+  // animation: none;
+  // /* Use normal blending,
+  // so the new view sits on top and obscures the old view */
+  mix-blend-mode: normal;
+  // /* Make the height the same as the group,
+  // meaning the view size might not match its aspect-ratio. */
+  height: 100%;
+  // /* Clip any overflow of the view */
+  overflow: clip;
+}
+
+::view-transition-old(photolog-image) {
+  /* Maintain the aspect ratio of the view,
+    by shrinking it to fit within the bounds of the element */
+  object-fit: contain;
+}
+
+::view-transition-new(photolog-image) {
+  /* Maintain the aspect ratio of the view,
+    by growing it to cover the bounds of the element */
+  object-fit: cover;
+}
+
+::view-transition-image-pair(photolog-image) {
+  //isolation: isolate;
+}
+
+@media (prefers-reduced-motion) {
+  ::view-transition-group(*),
+  ::view-transition-old(*),
+  ::view-transition-new(*) {
+    animation: none !important;
+  }
+}
+
+.with-photolog mat-sidenav {
+  display: none;
+  z-index: 0 !important;
+  opacity: 0;
+  visibility: hidden !important;
+}
+
+.encode-sans-semi-condensed-bold {
+  font-family: 'Encode Sans Semi Condensed', sans-serif;
+  font-weight: 700;
+  font-style: normal;
+}
+
+.encode-sans-semi-condensed-extrabold {
+  font-family: 'Encode Sans Semi Condensed', sans-serif;
+  font-weight: 800;
+  font-style: normal;
+}

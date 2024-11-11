@@ -1,0 +1,11 @@
+.plg-layout-viewport,
+.plg-layout-viewport .plg-layout {
+  display: block;
+  position: relative;
+}
+
+.plg-layout-viewport {
+  .plg-layout .plg-layout-item {
+    position: absolute;
+  }
+}

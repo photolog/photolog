@@ -1,0 +1,88 @@
+.plg-lightbox,
+.plg-lightbox .plg-backdrop,
+.plg-lightbox .plg-lightbox-slide {
+  height: 100%;
+  width: 100%;
+}
+
+.plg-lightbox {
+  display: block;
+  position: fixed;
+  overflow: hidden;
+  contain: layout;
+  z-index: 1001;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+}
+
+.plg-lightbox .plg-backdrop {
+  display: block;
+  background-color: #0f0f0f;
+  overflow: hidden;
+  position: absolute;
+  // opacity: 0;
+  transition: opacity ease-in 0.1618s;
+  width: 100%;
+  height: 100%;
+  z-index: 98;
+}
+
+.is-opening.plg-lightbox .plg-backdrop,
+.is-opened.plg-lightbox .plg-backdrop {
+  opacity: 1;
+}
+
+.plg-lightbox .plg-slide {
+  z-index: 99;
+}
+
+.plg-lightbox .plg-lightbox-toolbar {
+  @apply top-0;
+
+  /* Smooth gradient background shadow */
+  background: linear-gradient(
+    to bottom,
+    rgba(0, 0, 0, 0.8) 0%,
+    rgba(0, 0, 0, 0.6) 25%,
+    rgba(0, 0, 0, 0.3) 50%,
+    rgba(0, 0, 0, 0.1) 75%,
+    rgba(0, 0, 0, 0) 100%
+  );
+  z-index: 101;
+
+  button {
+    @apply z-50 text-inherit;
+    z-index: 999;
+  }
+}
+
+.plg-lightbox .plg-lightbox-toolbar,
+.plg-lightbox .plg-lightbox-footer {
+  @apply absolute left-0 w-full h-16 p-3;
+  @apply flex items-center;
+  @apply text-slate-50;
+
+  z-index: 101;
+}
+
+.is-opened.plg-lightbox {
+  .plg-lightbox-toolbar,
+  .plg-lightbox-footer {
+  }
+}
+
+.plg-lightbox .plg-lightbox-footer {
+  @apply justify-center bottom-0;
+
+  /* Smooth gradient background shadow */
+  background: linear-gradient(
+    to top,
+    rgba(0, 0, 0, 0.8) 0%,
+    rgba(0, 0, 0, 0.6) 25%,
+    rgba(0, 0, 0, 0.3) 50%,
+    rgba(0, 0, 0, 0.1) 75%,
+    rgba(0, 0, 0, 0) 100%
+  );
+}
