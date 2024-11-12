@@ -5,7 +5,7 @@ import { map, Observable, share, shareReplay } from 'rxjs';
 import type { PhotologImage, PhotologThumbnail } from '@photolog/core';
 import * as picsum from './utils/picsum-api';
 
-const THUMB_WIDTH = 325;
+const THUMB_WIDTH = 320;
 const IMAGE_FORMAT = 'webp';
 
 const convertPicsumImageToPhotologImage = ({
@@ -32,11 +32,16 @@ const convertPicsumImageToPhotologImage = ({
     width: THUMB_WIDTH,
   } satisfies PhotologThumbnail;
 
+  const alt = `A photo by ${metadata.author} used as an example in an Angular Lightbox`;
+  const caption = `Photo by ${metadata.author} on Unsplash`;
+
   return {
     ...metadata,
     src,
     thumbnail,
     aspectRatio,
+    alt,
+    caption,
   };
 };
 

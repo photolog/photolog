@@ -1,21 +1,63 @@
-<!-- <nav>
-  <mat-toolbar>
-    <span>Photolog</span>
-  </mat-toolbar>
-</nav> -->
-<mat-sidenav-container autosize="">
+@defer (when (isMobile$ | async)) {
+  <nav
+    id="nav"
+    class="fixed w-full top-0 z-[2]"
+    [class.opacity-0]="drawer.opened"
+    [class.z-0]="(sidenavModeOver$ | async) && drawer.opened"
+  >
+    <mat-toolbar class="justify-between !h-14">
+      <div>
+        <ng-container [ngTemplateOutlet]="toggleDrawerButton" />
+      </div>
+
+      <div>
+        <ng-container [ngTemplateOutlet]="appName" />
+      </div>
+      <div>
+        <a mat-icon-button [href]="githubLink" target="_blank">
+          <img
+            width="24"
+            height="23.5102040816"
+            src="/img/github-mark.svg"
+            alt=""
+            class="!m-0"
+          />
+        </a>
+      </div>
+    </mat-toolbar>
+  </nav>
+}
+<mat-sidenav-container [hasBackdrop]="false">
   <mat-sidenav
-    [opened]="sidenavOpened()"
-    [mode]="sidenavMode()"
+    [opened]="isLargeScreen$ | async"
+    [mode]="sidenavMode$ | async"
     fixedInViewport
     fixedTopGap="0"
     fixedBottomGap="0"
+    #drawer
+    [disableClose]="(sidenavMode$ | async) === 'side'"
   >
-    <mat-toolbar>
-      <span class="app-name encode-sans-semi-condensed-extrabold"
-        >Photolog</span
-      >
+    <mat-toolbar class="!h-14">
+      <div class="flex gap-2 items-center">
+        @if (sidenavModeOver$ | async) {
+          <ng-container [ngTemplateOutlet]="toggleDrawerButton" />
+        }
+
+        <ng-container [ngTemplateOutlet]="appName" />
+      </div>
     </mat-toolbar>
+
+    <section class="border-t border-gray-300 border-opacity-50 p-4">
+      <p class="leading-[1rem] text-[0.8rem] opacity-85">
+        An experimental Angular image gallery using the
+        <a
+          class="text-blue-700 font-medium"
+          href="https://developer.mozilla.org/en-US/docs/Web/API/View_Transitions_API"
+          target="_blank"
+          >View Transitions API</a
+        >
+      </p>
+    </section>
 
     <section class="flex flex-col h-full flex-1 overflow-auto">
       <section
@@ -33,6 +75,7 @@
                 [queryParams]="link.queryParams"
                 [activated]="rla.isActive"
                 class="!rounded-l-none"
+                (click)="onNavItemClick()"
                 >{{ link.text }}</a
               >
             }
@@ -42,12 +85,7 @@
 
       <section class="border-t border-gray-300 border-opacity-50 px-4 py-2">
         <mat-nav-list class="additional-links">
-          <a
-            mat-list-item
-            href="https://github.com/photolog/photolog"
-            rel="noopener"
-            target="_blank"
-          >
+          <a mat-list-item [href]="githubLink" target="_blank">
             <img matListItemIcon src="/img/github-mark.svg" alt="" />
             <h3 matListItemTitle>GitHub</h3>
           </a>
@@ -55,17 +93,17 @@
       </section>
 
       <footer class="border-t border-gray-300 border-opacity-50 p-4">
-        <p class="leading-[1rem] text-[0.8rem] opacity-75">
+        <p class="leading-[1rem] text-[0.8rem] opacity-85">
           Images on this site are sourced from
           <a
-            class="text-blue-600 font-medium"
+            class="text-blue-700 font-medium"
             href="https://unsplash.com"
             target="_blank"
             >Unsplash</a
           >
           via
           <a
-            class="text-blue-600 font-medium"
+            class="text-blue-700 font-medium"
             href="https://picsum.photos"
             target="_blank"
             >Picsum</a
@@ -77,8 +115,23 @@
     </section>
   </mat-sidenav>
   <mat-sidenav-content>
-    <main class="pr-4 relative w-full h-full">
+    <main
+      class="relative w-full h-full pt-14"
+      [class.!pt-0]="isLargeScreen$ | async"
+    >
       <router-outlet></router-outlet>
     </main>
   </mat-sidenav-content>
 </mat-sidenav-container>
+
+<ng-template #toggleDrawerButton>
+  <button mat-icon-button (click)="drawer.toggle()">
+    <mat-icon>menu</mat-icon>
+  </button>
+</ng-template>
+
+<ng-template #appName>
+  <span class="app-name encode-sans-semi-condensed-extrabold text-2xl"
+    >Photolog</span
+  >
+</ng-template>

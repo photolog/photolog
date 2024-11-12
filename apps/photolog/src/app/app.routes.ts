@@ -1,14 +1,17 @@
 import { Route } from '@angular/router';
 
-import { photoListResolver } from './resolvers/photo-list.resolver';
-import { photoResolver } from './resolvers/photo.resolver';
+import { provideEffects } from '@ngrx/effects';
+import { provideState } from '@ngrx/store';
+import * as fromImages from '@photolog/data-access-images';
 import { defaultResizeOptions, provideResizeOptions } from 'ngxtension/resize';
+import { queryParamsResolver } from './resolvers/photo-list.resolver';
+import { photoResolver } from './resolvers/photo.resolver';
 
 export const appRoutes: Route[] = [
   {
     path: 'photos',
     resolve: {
-      photos: photoListResolver,
+      queryParams: queryParamsResolver,
     },
     runGuardsAndResolvers: 'paramsOrQueryParamsChange',
     loadComponent: () =>
@@ -16,6 +19,10 @@ export const appRoutes: Route[] = [
         (mod) => mod.PhotoListPage,
       ),
     providers: [
+      provideState(fromImages.IMAGES_FEATURE_KEY, fromImages.imagesReducer),
+      provideState(fromImages.PAGES_FEATURE_KEY, fromImages.pagesReducer),
+      provideEffects(fromImages.ImagesEffects, fromImages.PagesEffects),
+
       provideResizeOptions({
         ...defaultResizeOptions,
         // emitInZone: true,

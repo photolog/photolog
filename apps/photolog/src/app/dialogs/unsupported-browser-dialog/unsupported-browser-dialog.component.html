@@ -1,35 +1,25 @@
-<h2 mat-dialog-title>Unsupport Browser</h2>
+<h2 mat-dialog-title>Unsupported Platform</h2>
 <mat-dialog-content class="space-y-3">
-  <p>
-    You are browsing with <strong>{{ browserInfo().name }}</strong> version
-    <strong>{{ browserInfo().version }}</strong
-    >.
-  </p>
-
   <section class="space-y-3">
     <p>
       This website implements features that rely on the
-      <strong
-        ><a
-          href="https://developer.mozilla.org/en-US/docs/Web/API/View_Transitions_API"
-          target="_blank"
-          rel="noopener noreferrer"
-          class="text-blue-500"
-          >View Transitions API</a
-        ></strong
+      <a
+        href="https://developer.mozilla.org/en-US/docs/Web/API/View_Transitions_API"
+        target="_blank"
+        rel="noopener noreferrer"
+        class="text-blue-500"
+        >View Transitions API</a
       >, which is not yet supported in your browser.
     </p>
     <p>You can still use the site, but transitions may appear static.</p>
     <p>
       For the best experience, use a browser that
-      <strong
-        ><a
-          href="https://caniuse.com/view-transitions"
-          target="_blank"
-          rel="noopener noreferrer"
-          class="text-blue-500"
-          >supports the View Transitions API</a
-        ></strong
+      <a
+        href="https://caniuse.com/view-transitions"
+        target="_blank"
+        rel="noopener noreferrer"
+        class="text-blue-500"
+        >supports the View Transitions API</a
       >.
     </p>
   </section>

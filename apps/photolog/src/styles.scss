@@ -48,6 +48,10 @@
   visibility: hidden !important;
 }
 
+.with-photolog #nav {
+  z-index: 0;
+}
+
 .encode-sans-semi-condensed-bold {
   font-family: 'Encode Sans Semi Condensed', sans-serif;
   font-weight: 700;

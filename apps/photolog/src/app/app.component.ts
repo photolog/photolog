@@ -1,18 +1,26 @@
 import { coerceBooleanProperty } from '@angular/cdk/coercion';
-import { BreakpointObserver, LayoutModule } from '@angular/cdk/layout';
+import {
+  BreakpointObserver,
+  Breakpoints,
+  LayoutModule,
+} from '@angular/cdk/layout';
 import { ScrollStrategyOptions } from '@angular/cdk/overlay';
-import { afterNextRender, Component, computed, inject } from '@angular/core';
-import { toSignal } from '@angular/core/rxjs-interop';
+import { AsyncPipe, NgTemplateOutlet } from '@angular/common';
+import { afterNextRender, Component, inject, viewChild } from '@angular/core';
+import { MatIconButton } from '@angular/material/button';
 import { MatDialog } from '@angular/material/dialog';
-import { MatDivider } from '@angular/material/divider';
+import { MatIcon } from '@angular/material/icon';
 import { MatListModule } from '@angular/material/list';
-import { MatSidenavModule } from '@angular/material/sidenav';
+import {
+  MatDrawer,
+  MatSidenav,
+  MatSidenavModule,
+} from '@angular/material/sidenav';
 import { MatToolbar } from '@angular/material/toolbar';
 import { RouterLink, RouterLinkActive, RouterOutlet } from '@angular/router';
 import { supportsViewTransitionsAPI } from '@photolog/core';
-import { map, startWith, tap } from 'rxjs';
+import { map, Observable, tap } from 'rxjs';
 import { UnsupportedBrowserDialogComponent } from './dialogs/unsupported-browser-dialog/unsupported-browser-dialog.component';
-import { MatIcon } from '@angular/material/icon';
 
 const UNSUPPORTED_BROWSER_NOTICE_CONSENT = 'unsupportedBrowserNoticeConsent';
 
@@ -26,8 +34,10 @@ const UNSUPPORTED_BROWSER_NOTICE_CONSENT = 'unsupportedBrowserNoticeConsent';
     MatSidenavModule,
     LayoutModule,
     MatListModule,
-    MatDivider,
+    NgTemplateOutlet,
     MatIcon,
+    MatIconButton,
+    AsyncPipe,
   ],
   selector: 'app-root',
   templateUrl: './app.component.html',
@@ -38,39 +48,47 @@ export class AppComponent {
 
   private readonly breakpointObserver = inject(BreakpointObserver);
   private readonly dialog = inject(MatDialog);
+  private readonly drawer = viewChild(MatSidenav);
   private readonly scrollStrategyOptions = inject(ScrollStrategyOptions);
 
-  private readonly isMobile = toSignal(
-    this.breakpointObserver
-      .observe('(max-width: 640px)')
-      .pipe(map((state) => state.matches)),
-  );
+  readonly isLargeScreen$ = this.breakpointObserver
+    .observe([Breakpoints.Medium, Breakpoints.Web])
+    .pipe(map((state) => state.matches));
 
-  readonly sidenavOpened = computed(() => !this.isMobile());
-  readonly sidenavMode = computed(() => (this.isMobile() ? 'over' : 'side'));
+  readonly isMobile$ = this.isLargeScreen$.pipe(map((matches) => !matches));
+
+  readonly sidenavMode$ = this.isLargeScreen$.pipe(
+    map((matches) => (matches ? 'side' : 'over')),
+  ) as Observable<any>;
+
+  readonly sidenavModeOver$ = this.sidenavMode$.pipe(
+    map((mode) => mode === 'over'),
+  ) as Observable<boolean>;
 
   readonly navItemGroups = [
     {
-      name: 'Collections',
+      name: 'Albums',
       items: [
         {
-          text: 'Perspectives',
+          text: 'Miscellaneous',
           path: ['', 'photos'],
-          queryParams: { page: 2 },
+          queryParams: { page: 9 },
         },
         {
-          text: 'Random',
+          text: 'Around The World',
           path: ['', 'photos'],
-          queryParams: { page: 3 },
+          queryParams: { page: 17 },
         },
         {
-          text: 'Worldly Things',
+          text: 'Landscapes',
           path: ['', 'photos'],
-          queryParams: { page: 4 },
+          queryParams: { page: 16 },
         },
       ],
     },
   ];
+
+  readonly githubLink = 'https://github.com/ekkolon';
 
   constructor() {
     afterNextRender({
@@ -78,6 +96,13 @@ export class AppComponent {
         this.showUnsupportedBrowserNoticeIfNecessary();
       },
     });
+  }
+
+  async onNavItemClick() {
+    const drawer = this.drawer() as MatDrawer;
+    if (drawer.opened && drawer.mode === 'over') {
+      await drawer.close();
+    }
   }
 
   private showUnsupportedBrowserNoticeIfNecessary(): void {

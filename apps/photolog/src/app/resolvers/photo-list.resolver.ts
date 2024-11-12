@@ -1,10 +1,18 @@
-import { inject } from '@angular/core';
-import { ResolveFn } from '@angular/router';
-import type { PhotologImage } from '@photolog/core';
-import { PhotologImageDataService } from '@photolog/data-access-images';
+import { ActivatedRouteSnapshot, ResolveFn } from '@angular/router';
+import { LoadPageProps } from '@photolog/data-access-images';
 
-export const photoListResolver: ResolveFn<PhotologImage[]> = (route, state) => {
-  const imageDataService = inject(PhotologImageDataService);
-  const page = route.queryParams['page'];
-  return imageDataService.getImages({ page });
+export const queryParamsResolver: ResolveFn<LoadPageProps> = (route) => {
+  return extractPageParams(route);
 };
+
+// export const pageResolver: ResolveFn<Page | undefined> = (route) => {
+//   const pagesFacade = inject(PagesFacade);
+//   const pageParams = extractPageParams(route);
+//   return pagesFacade.loadPage(pageParams);
+// };
+
+function extractPageParams(route: ActivatedRouteSnapshot) {
+  const page = Number(route.queryParams['page'] || 1);
+  const limit = Number(route.queryParams['limit'] || 30);
+  return { page, limit };
+}

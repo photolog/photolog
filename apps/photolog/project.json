@@ -88,9 +88,22 @@
     "serve-static": {
       "executor": "@nx/web:file-server",
       "options": {
-        "buildTarget": "playground:build",
+        "buildTarget": "playground:build:prod",
         "staticFilePath": "dist/apps/photolog/browser",
         "spa": true
+      }
+    },
+
+    "deploy": {
+      "executor": "nx:run-commands",
+      "dependsOn": ["playground:build"],
+      "cache": false,
+      "options": {
+        "commands": [
+          {
+            "command": "pnpm exec firebase deploy --only hosting"
+          }
+        ]
       }
     }
   }

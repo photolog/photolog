@@ -25,7 +25,6 @@ import {
   PhotologImage,
   PhotologViewTransitionDirective,
   PhotologViewTransitionService,
-  supportsViewTransitionsAPI,
 } from '@photolog/core';
 import { merge, switchMap } from 'rxjs';
 
@@ -65,10 +64,10 @@ const WITH_PHOTOLOG_CSS = 'with-photolog';
   changeDetection: ChangeDetectionStrategy.OnPush,
   host: {
     class: 'plg-lightbox',
-    '[class.is-opening]': 'isOpening()',
-    '[class.is-opened]': 'isOpened()()',
     tabindex: '-1',
     role: 'dialog',
+    '[class.is-opening]': 'isOpening()',
+    '[class.is-opened]': 'isOpened()()',
     'aria-modal': 'true',
     'aria-hidden': 'true',
     'aria-label': 'Close the container with the Escape key',
@@ -128,7 +127,6 @@ export class PhotologLightboxComponent implements OnDestroy {
       read: () => {
         this.initSlides();
 
-        // Listen for DOM events (e.g close on ESC etc)
         this.setupDOMEventListeners();
       },
     });
@@ -136,13 +134,17 @@ export class PhotologLightboxComponent implements OnDestroy {
 
   async close(): Promise<unknown> {
     this.animationState.set(AnimationVisibilityState.Hidden);
-    if (supportsViewTransitionsAPI(this.document)) {
-      this.location.back();
-      return;
+
+    const previousNavigation = this.getPrevNavigation();
+    if (previousNavigation) {
+      // Instead of navigating back with the Angular router, we use Angular's location service
+      // to go back to the previous router url in history and restore the scroll position.
+      return this.location.back();
     }
 
     const backUrl = this.config.backUrl.toString();
     await this.router.navigateByUrl(backUrl);
+
     this.isOpened.set(signal(false));
     return;
   }
@@ -196,6 +198,10 @@ export class PhotologLightboxComponent implements OnDestroy {
   }
 
   private isInitialNavigation() {
-    return this.router.lastSuccessfulNavigation?.previousNavigation == null;
+    return this.getPrevNavigation() == null;
+  }
+
+  private getPrevNavigation() {
+    return this.router.lastSuccessfulNavigation?.previousNavigation;
   }
 }

@@ -3,12 +3,16 @@ mat-sidenav mat-toolbar {
   // background-color: #ebedef;
 }
 
+:host {
+  display: block;
+  position: relative;
+}
+
 mat-sidenav {
   --mdc-list-list-item-one-line-container-height: 32px;
   --mdc-list-list-item-label-text-font: 'Roboto Flex', Roboto;
-  width: 256px;
   border-radius: 0;
-  // z-index: 0 !important;
+  width: 224px;
 
   ::ng-deep .mat-drawer-inner-container {
     display: flex;
@@ -21,14 +25,20 @@ mat-sidenav {
   }
 }
 
-mat-sidenav mat-toolbar {
+mat-sidenav.mat-drawer-opened.mat-drawer-over {
+  width: 256px;
+}
+
+@media (min-width: 1280px) {
+  mat-sidenav.mat-drawer-side {
+    width: 256px;
+  }
+}
+
+mat-toolbar {
   // font-weight: 600;
   //   font-family: 'Roboto';
   flex: 0 0 auto;
-
-  .app-name {
-    font-size: 32px;
-  }
 }
 
 mat-sidenav .content {

@@ -1,28 +1,35 @@
 <plg-layout-viewport>
-  <plg-layout [height]="layoutHeight()">
-    @for (item of layoutItems(); track item.data.id) {
-      <plg-layout-item [geometry]="item.box" [plgViewTransition]="item.data.id">
-        <a
-          [routerLink]="['', 'photos', item.data.id]"
-          (click)="viewPhoto($event, item.data.id)"
-        >
+  @let containerHeight = layoutHeight();
+  @let items = layoutItems();
+
+  <plg-layout [height]="containerHeight">
+    @for (item of items; track item.data.id; let index = $index) {
+      <plg-layout-item
+        [geometry]="item.box"
+        [plgViewTransition]="item.data.id"
+        class="bg-gray-200"
+      >
+        <a class="relative" [routerLink]="['', 'photos', item.data.id]">
+          <div class="sr-only opacity-0">
+            View image {{ index + 1 }} in full detail
+          </div>
           @defer (on viewport) {
             <img
-              [alt]=""
               [src]="item.data.thumbnail.src"
               [width]="item.box.width"
               [height]="item.box.height"
               fetchpriority="high"
+              [alt]="item.data.alt"
             />
-          } @placeholder {
+          } @loading (minimum 500ms) {
             <div
-              class="bg-gray-300"
+              class="bg-gray-200"
               [style.width.px]="item.box.width"
               [style.height.px]="item.box.height"
             ></div>
-          } @loading {
+          } @placeholder {
             <div
-              class="bg-gray-300"
+              class="bg-gray-200"
               [style.width.px]="item.box.width"
               [style.height.px]="item.box.height"
             ></div>
