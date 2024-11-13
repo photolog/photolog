@@ -9,9 +9,9 @@
   animation: none;
   // /* Use normal blending,
   // so the new view sits on top and obscures the old view */
-  mix-blend-mode: normal;
+  mix-blend-mode: darken;
   // /* Make the height the same as the group,meaning the view size might not match its aspect-ratio. */
-  // height: 100%;
+  height: 100%;
 
   // /* Clip any overflow of the view */
   overflow: clip;
@@ -21,12 +21,14 @@
   /* Maintain the aspect ratio of the view,
     by shrinking it to fit within the bounds of the element */
   object-fit: contain;
+  // display: none;
 }
 
 ::view-transition-new(photolog-image) {
   /* Maintain the aspect ratio of the view,
     by growing it to cover the bounds of the element */
   object-fit: cover;
+  // animation: none;
 }
 
 ::view-transition-group(photolog-image) {
@@ -36,7 +38,7 @@
 
 ::view-transition-image-pair(photolog-image) {
   // isolation: isolate;
-  animation: none;
+  // animation: none;
 }
 
 @media (prefers-reduced-motion) {
