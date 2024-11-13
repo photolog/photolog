@@ -2,10 +2,14 @@ import { HttpClient } from '@angular/common/http';
 import { inject, Injectable } from '@angular/core';
 import { map, Observable, share, shareReplay } from 'rxjs';
 
-import type { PhotologImage, PhotologThumbnail } from '@photolog/core';
+import {
+  round,
+  type PhotologImage,
+  type PhotologThumbnail,
+} from '@photolog/core';
 import * as picsum from './utils/picsum-api';
 
-const THUMB_WIDTH = 320;
+const THUMB_WIDTH = 360;
 const IMAGE_FORMAT = 'webp';
 
 const convertPicsumImageToPhotologImage = ({
@@ -17,12 +21,12 @@ const convertPicsumImageToPhotologImage = ({
   const aspectRatio = metadata.width / metadata.height;
   const src = `${download_url}.${IMAGE_FORMAT}`;
 
-  const thumbHeight = Math.round(THUMB_WIDTH / aspectRatio);
+  const thumbHeight = round(THUMB_WIDTH / aspectRatio);
 
   const thumbSrc = picsum.generateThumbUrl(
     metadata.id,
     THUMB_WIDTH,
-    thumbHeight,
+    Math.floor(thumbHeight),
     IMAGE_FORMAT,
   );
 

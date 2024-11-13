@@ -3,4 +3,3 @@ export interface PhotologOptions {
 }
 
 export type PhotologConfig = Required<PhotologOptions>;
-

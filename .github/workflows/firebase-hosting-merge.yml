@@ -18,7 +18,7 @@ jobs:
         with:
           version: 9
       - run: pnpm exec nx build playground -c production
-      
+
       - uses: FirebaseExtended/action-hosting-deploy@v0
         with:
           repoToken: ${{ secrets.GITHUB_TOKEN }}

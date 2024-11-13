@@ -69,7 +69,6 @@ const WITH_PHOTOLOG_CSS = 'with-photolog';
     '[class.is-opening]': 'isOpening()',
     '[class.is-opened]': 'isOpened()()',
     'aria-modal': 'true',
-    'aria-hidden': 'true',
     'aria-label': 'Close the container with the Escape key',
   },
   animations: [
@@ -78,8 +77,8 @@ const WITH_PHOTOLOG_CSS = 'with-photolog';
       leaveDurationMs: 10,
     }),
     fadeInOutElementAnimation({
-      enterDurationMs: 2 * PHI * 100,
-      leaveDurationMs: (PHI / 2) * 100,
+      enterDurationMs: Math.PI * PHI * 100,
+      leaveDurationMs: 31,
     }),
   ],
 })
@@ -123,6 +122,7 @@ export class PhotologLightboxComponent implements OnDestroy {
     afterNextRender({
       write: () => {
         this.applyGlobals();
+        this.animationState.set(AnimationVisibilityState.Visible);
       },
       read: () => {
         this.initSlides();
@@ -154,9 +154,9 @@ export class PhotologLightboxComponent implements OnDestroy {
   }
 
   onSlideLoaded() {
-    if (this.animationState() === AnimationVisibilityState.Hidden) {
-      this.animationState.set(AnimationVisibilityState.Visible);
-    }
+    // if (this.animationState() === AnimationVisibilityState.Hidden) {
+    //   this.animationState.set(AnimationVisibilityState.Visible);
+    // }
   }
 
   private setupDOMEventListeners() {

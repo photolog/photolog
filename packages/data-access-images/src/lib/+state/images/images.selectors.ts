@@ -44,4 +44,3 @@ export const selectSelectedImage = createSelector(
 
 export const selectImage = (imageId: string) =>
   createSelector(selectImagesState, (state) => state.entities[imageId]);
-

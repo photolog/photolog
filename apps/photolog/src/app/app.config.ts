@@ -14,13 +14,37 @@ import {
   withRouterConfig,
   withViewTransitions,
 } from '@angular/router';
-import { onViewTransitionCreated, providePhotolog } from '@photolog/core';
+import {
+  fitImageInArea,
+  onViewTransitionCreated,
+  PhotologImage,
+  providePhotolog,
+  round,
+} from '@photolog/core';
 import { withLayout } from '@photolog/layout';
-import { withLightbox } from '@photolog/lightbox';
+import { PhotologSlideSourceResolver, withLightbox } from '@photolog/lightbox';
 import { appRoutes } from './app.routes';
 import { provideStore } from '@ngrx/store';
 import { provideEffects } from '@ngrx/effects';
 import { provideStoreDevtools } from '@ngrx/store-devtools';
+import { generateThumbUrl } from 'packages/data-access-images/src/lib/utils/picsum-api';
+
+const photologSlideSourceResolver: PhotologSlideSourceResolver<
+  PhotologImage
+> = (props) => {
+  const { height, width } = fitImageInArea(
+    props.data.width,
+    props.data.height,
+    props.viewportWidth,
+    props.viewportHeight,
+  );
+  return generateThumbUrl(
+    props.data.id,
+    round(width, 0),
+    round(height, 0),
+    'webp',
+  );
+};
 
 export const appConfig: ApplicationConfig = {
   providers: [
@@ -45,6 +69,7 @@ export const appConfig: ApplicationConfig = {
       withLayout({}),
       withLightbox({
         backUrl: '/photos',
+        slideSourceResolver: photologSlideSourceResolver as never,
       }),
     ),
     provideFirebaseApp(() =>

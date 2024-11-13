@@ -1,4 +1,4 @@
-import { Observable } from 'rxjs';
+import { from, map, Observable } from 'rxjs';
 import { Size2D } from './geometry';
 
 /**
@@ -42,4 +42,10 @@ export function loadImage({
       };
     }
   });
+}
+
+export function decodeImage(src: string): Observable<HTMLImageElement> {
+  const img = new Image();
+  img.src = src;
+  return from(img.decode()).pipe(map(() => img));
 }

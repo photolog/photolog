@@ -3,9 +3,6 @@
   [style.height.px]="height()"
   [style.width.px]="width()"
 >
-  <!-- @if (state.loaded()) {
-  }
-   -->
   <img
     [src]="src()()"
     [alt]="alt()"
@@ -13,6 +10,8 @@
     loading="eager"
     [style.height.px]="height()"
     [style.width.px]="width()"
+    [height]="height()"
+    [width]="width()"
   />
 
   @if (loading()) {

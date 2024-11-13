@@ -21,6 +21,7 @@ import {
   normalizePadding,
   PhotologImage,
   PhotologViewTransitionDirective,
+  PlgLayoutImageComponent,
   ViewportService,
 } from '@photolog/core';
 import { LoadPageProps, Page, PagesFacade } from '@photolog/data-access-images';
@@ -54,7 +55,12 @@ const mapPageImages = (page?: Page) => (page == null ? [] : page.images);
 
 @Component({
   standalone: true,
-  imports: [RouterLink, PhotologViewTransitionDirective, PhotologLayoutModule],
+  imports: [
+    RouterLink,
+    PhotologViewTransitionDirective,
+    PhotologLayoutModule,
+    PlgLayoutImageComponent,
+  ],
   templateUrl: './photo-list.page.html',
   styleUrl: './photo-list.page.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,

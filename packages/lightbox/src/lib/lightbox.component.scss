@@ -22,7 +22,6 @@
   background-color: #0f0f0f;
   overflow: hidden;
   position: absolute;
-  // opacity: 0;
   transition: opacity ease-in 0.1618s;
   width: 100%;
   height: 100%;
@@ -38,51 +37,55 @@
   z-index: 99;
 }
 
-.plg-lightbox .plg-lightbox-toolbar {
-  @apply top-0;
-
-  /* Smooth gradient background shadow */
-  background: linear-gradient(
-    to bottom,
-    rgba(0, 0, 0, 0.8) 0%,
-    rgba(0, 0, 0, 0.6) 25%,
-    rgba(0, 0, 0, 0.3) 50%,
-    rgba(0, 0, 0, 0.1) 75%,
-    rgba(0, 0, 0, 0) 100%
-  );
-  z-index: 101;
-
-  button {
-    @apply z-50 text-inherit;
-    z-index: 999;
-  }
+.plg-lightbox {
+  --start-opacity: 0.75;
+  --stop-opacity-25: 0.5;
+  --stop-opacity-50: 0.3;
+  --stop-opacity-75: 0.1;
+  --stop-opacity-100: 0;
 }
 
 .plg-lightbox .plg-lightbox-toolbar,
 .plg-lightbox .plg-lightbox-footer {
-  @apply absolute left-0 w-full h-16 p-3;
-  @apply flex items-center;
-  @apply text-slate-50;
-
+  opacity: 0;
+  position: absolute;
+  left: 0;
+  width: 100%;
+  height: 64px;
+  padding: 12px;
+  color: #f8fafc;
+  display: flex;
+  align-items: center;
   z-index: 101;
 }
 
-.is-opened.plg-lightbox {
-  .plg-lightbox-toolbar,
-  .plg-lightbox-footer {
+.plg-lightbox .plg-lightbox-toolbar {
+  top: 0;
+  z-index: 101;
+  background: linear-gradient(
+    to bottom,
+    rgba(0, 0, 0, var(--start-opacity)) 0%,
+    rgba(0, 0, 0, var(--stop-opacity-25)) 25%,
+    rgba(0, 0, 0, var(--stop-opacity-50)) 50%,
+    rgba(0, 0, 0, var(--stop-opacity-75)) 75%,
+    rgba(0, 0, 0, var(--stop-opacity-100)) 100%
+  );
+
+  button {
+    color: inherit;
+    z-index: 999;
   }
 }
 
 .plg-lightbox .plg-lightbox-footer {
-  @apply justify-center bottom-0;
-
-  /* Smooth gradient background shadow */
+  bottom: 0;
+  justify-content: center;
   background: linear-gradient(
     to top,
-    rgba(0, 0, 0, 0.8) 0%,
-    rgba(0, 0, 0, 0.6) 25%,
-    rgba(0, 0, 0, 0.3) 50%,
-    rgba(0, 0, 0, 0.1) 75%,
-    rgba(0, 0, 0, 0) 100%
+    rgba(0, 0, 0, var(--start-opacity)) 0%,
+    rgba(0, 0, 0, var(--stop-opacity-25)) 25%,
+    rgba(0, 0, 0, var(--stop-opacity-50)) 50%,
+    rgba(0, 0, 0, var(--stop-opacity-75)) 75%,
+    rgba(0, 0, 0, var(--stop-opacity-100)) 100%
   );
 }

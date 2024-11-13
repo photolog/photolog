@@ -1,0 +1,7 @@
+@defer (on viewport) {
+  <img [src]="src()" fetchpriority="high" [alt]="alt()" />
+} @loading (minimum 500ms) {
+  <div plgLayoutImagePlaceholder></div>
+} @placeholder {
+  <div plgLayoutImagePlaceholder></div>
+}

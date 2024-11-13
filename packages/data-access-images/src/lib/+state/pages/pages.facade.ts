@@ -2,7 +2,7 @@ import { inject, Injectable } from '@angular/core';
 import { Store } from '@ngrx/store';
 import { map } from 'rxjs';
 import { selectAllImages } from '../images/images.selectors';
-import * as imagesActions from './pages.actions';
+import * as pagesActions from './pages.actions';
 import {
   selectAllPages,
   selectSelectedPage,
@@ -17,8 +17,8 @@ export class PagesFacade {
   readonly selectedPage$ = this.store.select(selectSelectedPage);
   readonly selectedPageImages$ = this.store.select(selectSelectedPageImages);
 
-  loadPage(options: imagesActions.LoadPageProps) {
-    this.store.dispatch(imagesActions.loadPage(options));
+  loadPage(options: pagesActions.LoadPageProps) {
+    this.store.dispatch(pagesActions.loadPage(options));
   }
 
   getImages(pageId: number) {

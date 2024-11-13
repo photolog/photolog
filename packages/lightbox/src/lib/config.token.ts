@@ -14,7 +14,7 @@ export const defaultOptions = {
   backUrl: '/',
   viewTransitionName: 'photolog-slide',
   viewTransitionRouteIdParam: 'photoId',
-} satisfies PhotologLightboxConfig;
+} satisfies PhotologLightboxOptions;
 
 export function provideLightboxConfig(
   options: PhotologLightboxOptions = {},

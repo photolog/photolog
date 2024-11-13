@@ -9,10 +9,10 @@
 
   .plg-slide-content {
     position: relative;
-    // display: flex;
-    // align-items: center;
-    // justify-content: center;
-    // user-select: none;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    user-select: none;
     flex: 1;
 
     img {
@@ -23,6 +23,8 @@
       -o-user-select: none;
       user-select: none;
       pointer-events: none;
+      border: none;
+      outline: none;
     }
 
     .plg-progress-spinner {

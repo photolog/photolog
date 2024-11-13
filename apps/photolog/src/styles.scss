@@ -6,13 +6,13 @@
 ::view-transition-new(photolog-image) {
   /* Prevent the default animation,
   so both views remain opacity:1 throughout the transition */
-  // animation: none;
+  animation: none;
   // /* Use normal blending,
   // so the new view sits on top and obscures the old view */
   mix-blend-mode: normal;
-  // /* Make the height the same as the group,
-  // meaning the view size might not match its aspect-ratio. */
-  height: 100%;
+  // /* Make the height the same as the group,meaning the view size might not match its aspect-ratio. */
+  // height: 100%;
+
   // /* Clip any overflow of the view */
   overflow: clip;
 }
@@ -29,8 +29,14 @@
   object-fit: cover;
 }
 
+::view-transition-group(photolog-image) {
+  animation-duration: 314ms;
+  animation-timing-function: ease;
+}
+
 ::view-transition-image-pair(photolog-image) {
-  //isolation: isolate;
+  // isolation: isolate;
+  animation: none;
 }
 
 @media (prefers-reduced-motion) {
@@ -41,25 +47,10 @@
   }
 }
 
-.with-photolog mat-sidenav {
+.with-photolog mat-sidenav,
+.with-photolog #nav {
   display: none;
   z-index: 0 !important;
   opacity: 0;
   visibility: hidden !important;
-}
-
-.with-photolog #nav {
-  z-index: 0;
-}
-
-.encode-sans-semi-condensed-bold {
-  font-family: 'Encode Sans Semi Condensed', sans-serif;
-  font-weight: 700;
-  font-style: normal;
-}
-
-.encode-sans-semi-condensed-extrabold {
-  font-family: 'Encode Sans Semi Condensed', sans-serif;
-  font-weight: 800;
-  font-style: normal;
 }

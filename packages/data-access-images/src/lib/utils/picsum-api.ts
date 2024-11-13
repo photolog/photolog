@@ -21,16 +21,17 @@ export interface GetImageListRequestOptions {
   limit?: number;
 }
 
-const defaultImageListRequestOptions = {
-  page: 1,
-  limit: 30,
+export const defaultPicsumListOptions = {
+  page: 21,
+  limit: 25,
 } satisfies Required<GetImageListRequestOptions>;
 
 export function getImageListUrl(options?: GetImageListRequestOptions): string {
-  const config = { ...defaultImageListRequestOptions, ...options };
+  const page = Number(options?.page) || defaultPicsumListOptions.page;
+  const limit = Number(options?.limit) || defaultPicsumListOptions.limit;
   const url = new URL(IMAGE_LIST_BASE_URL);
-  url.searchParams.set('page', `${config.page}`);
-  url.searchParams.set('limit', `${config.limit}`);
+  url.searchParams.set('page', `${page}`);
+  url.searchParams.set('limit', `${limit}`);
   return url.toString();
 }
 

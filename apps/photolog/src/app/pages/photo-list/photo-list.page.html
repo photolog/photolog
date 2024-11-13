@@ -4,36 +4,17 @@
 
   <plg-layout [height]="containerHeight">
     @for (item of items; track item.data.id; let index = $index) {
-      <plg-layout-item
-        [geometry]="item.box"
-        [plgViewTransition]="item.data.id"
-        class="bg-gray-200"
-      >
+      <plg-layout-item [geometry]="item.box" [plgViewTransition]="item.data.id">
         <a class="relative" [routerLink]="['', 'photos', item.data.id]">
+          <plg-layout-image
+            [width]="item.box.width"
+            [height]="item.box.height"
+            [src]="item.data.thumbnail.src"
+          >
+          </plg-layout-image>
           <div class="sr-only opacity-0">
             View image {{ index + 1 }} in full detail
           </div>
-          @defer (on viewport) {
-            <img
-              [src]="item.data.thumbnail.src"
-              [width]="item.box.width"
-              [height]="item.box.height"
-              fetchpriority="high"
-              [alt]="item.data.alt"
-            />
-          } @loading (minimum 500ms) {
-            <div
-              class="bg-gray-200"
-              [style.width.px]="item.box.width"
-              [style.height.px]="item.box.height"
-            ></div>
-          } @placeholder {
-            <div
-              class="bg-gray-200"
-              [style.width.px]="item.box.width"
-              [style.height.px]="item.box.height"
-            ></div>
-          }
         </a>
       </plg-layout-item>
     }

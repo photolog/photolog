@@ -71,7 +71,7 @@ export class ViewportService {
     });
   }
 
-  get window(): Window & typeof globalThis {
+  getWindow(): Window & typeof globalThis {
     return (
       this.document.defaultView || (this.document as never)['parentWindow']
     );
@@ -88,7 +88,7 @@ export class ViewportService {
 
     let scrollbarWidth =
       parseInt(scrollbarWidthVar) ??
-      this.window.innerWidth - this.document.documentElement.offsetWidth;
+      this.getWindow().innerWidth - this.document.documentElement.offsetWidth;
 
     if (scrollbarWidth > 0) {
       return scrollbarWidth;
@@ -112,7 +112,7 @@ export class ViewportService {
   attachResizeListener() {
     if (typeof this.resizeHandlerFn === 'function') return;
     this.resizeHandlerFn = this.eventManager.addEventListener(
-      this.window as never,
+      this.getWindow() as never,
       'resize',
       this.onResize.bind(this),
     );

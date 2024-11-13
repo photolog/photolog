@@ -38,22 +38,15 @@ export function fitImageInArea(
   areaWidth: number,
   areaHeight: number,
 ): Size2D {
-  // Calculate the aspect ratios of the image and viewport
-  const imgAspectRatio = imgWidth / imgHeight;
-  const viewportAspectRatio = areaWidth / areaHeight;
+  const ar = Math.min(areaWidth / imgWidth, areaHeight / imgHeight);
+  const newWidth = imgWidth * ar;
+  const newHeight = imgHeight * ar;
+  const size = { width: newWidth, height: newHeight };
+  return size;
+}
 
-  let width, height;
-
-  // Fit based on the smaller ratio
-  if (imgAspectRatio > viewportAspectRatio) {
-    // Image is wider relative to the viewport
-    width = areaWidth;
-    height = areaWidth / imgAspectRatio;
-  } else {
-    // Image is taller relative to the viewport
-    height = areaHeight;
-    width = areaHeight * imgAspectRatio;
-  }
-
-  return { width, height };
+export function round(number: number, decimalPlaces = 2): number {
+  return Number(
+    Math.round(parseFloat(number + 'e' + decimalPlaces)) + 'e-' + decimalPlaces,
+  );
 }
