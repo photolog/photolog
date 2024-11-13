@@ -1,11 +1,20 @@
 type Primitive = string | number | boolean | null | undefined | symbol | bigint;
 type DeepMergeable = Record<string, unknown> | unknown[];
 
-/**
- * Helper function to check if a value is a plain object.
- */
 function isPlainObject(value: unknown): value is Record<string, unknown> {
   return typeof value === 'object' && value !== null && !Array.isArray(value);
+}
+
+function isPrimitive(value: unknown): value is Primitive {
+  return (
+    typeof value === 'string' ||
+    typeof value === 'number' ||
+    typeof value === 'boolean' ||
+    typeof value === 'symbol' ||
+    typeof value === 'bigint' ||
+    value === null ||
+    value === undefined
+  );
 }
 
 /**
@@ -42,19 +51,4 @@ export function deepMerge<T extends DeepMergeable>(target: T, source: T): T {
 
   // Default case: if they are incompatible types, return source
   return source;
-}
-
-/**
- * Helper function to check if a value is a primitive type.
- */
-function isPrimitive(value: unknown): value is Primitive {
-  return (
-    typeof value === 'string' ||
-    typeof value === 'number' ||
-    typeof value === 'boolean' ||
-    typeof value === 'symbol' ||
-    typeof value === 'bigint' ||
-    value === null ||
-    value === undefined
-  );
 }

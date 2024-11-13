@@ -72,7 +72,7 @@ export class AppComponent {
         {
           text: 'Miscellaneous',
           path: ['', 'photos'],
-          queryParams: { page: 21 },
+          queryParams: { page: 16 },
         },
         {
           text: 'Around The World',
@@ -82,7 +82,7 @@ export class AppComponent {
         {
           text: 'Landscapes',
           path: ['', 'photos'],
-          queryParams: { page: 16 },
+          queryParams: { page: 18 },
         },
       ],
     },

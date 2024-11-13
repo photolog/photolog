@@ -1,10 +1,9 @@
 import { provideHttpClient, withFetch } from '@angular/common/http';
 import {
   ApplicationConfig,
-  provideZoneChangeDetection,
   isDevMode,
+  provideZoneChangeDetection,
 } from '@angular/core';
-import { initializeApp, provideFirebaseApp } from '@angular/fire/app';
 import { provideClientHydration } from '@angular/platform-browser';
 import { provideAnimationsAsync } from '@angular/platform-browser/animations/async';
 import {
@@ -14,6 +13,9 @@ import {
   withRouterConfig,
   withViewTransitions,
 } from '@angular/router';
+import { provideEffects } from '@ngrx/effects';
+import { provideStore } from '@ngrx/store';
+import { provideStoreDevtools } from '@ngrx/store-devtools';
 import {
   fitImageInArea,
   onViewTransitionCreated,
@@ -23,11 +25,8 @@ import {
 } from '@photolog/core';
 import { withLayout } from '@photolog/layout';
 import { PhotologSlideSourceResolver, withLightbox } from '@photolog/lightbox';
-import { appRoutes } from './app.routes';
-import { provideStore } from '@ngrx/store';
-import { provideEffects } from '@ngrx/effects';
-import { provideStoreDevtools } from '@ngrx/store-devtools';
 import { generateThumbUrl } from 'packages/data-access-images/src/lib/utils/picsum-api';
+import { appRoutes } from './app.routes';
 
 const photologSlideSourceResolver: PhotologSlideSourceResolver<
   PhotologImage
@@ -70,17 +69,6 @@ export const appConfig: ApplicationConfig = {
       withLightbox({
         backUrl: '/photos',
         slideSourceResolver: photologSlideSourceResolver as never,
-      }),
-    ),
-    provideFirebaseApp(() =>
-      initializeApp({
-        projectId: 'photolog-dev',
-        appId: '1:208728965951:web:5c4ffc88845e96e7f9898a',
-        storageBucket: 'photolog-dev.appspot.com',
-        //locationId: 'europe-west' ,
-        apiKey: 'AIzaSyB0o_vVf_SWEN4C38MNT_AwUeFFHzacsY0',
-        authDomain: 'photolog-dev.firebaseapp.com',
-        messagingSenderId: '208728965951',
       }),
     ),
   ],
