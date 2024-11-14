@@ -17,22 +17,23 @@ import {
   toSignal,
 } from '@angular/core/rxjs-interop';
 import { RouterLink } from '@angular/router';
+
 import {
   normalizePadding,
   PhotologImage,
-  PhotologViewTransitionDirective,
-  PlgLayoutImageComponent,
   ViewportService,
+  ViewTransitionDirective,
 } from '@photolog/core';
 import { LoadPageProps, Page, PagesFacade } from '@photolog/data-access-images';
 import {
-  PhotologLayoutModule,
-  PhotologLayoutResult,
-  PhotologLayoutService,
-  PhotologLayoutViewportComponent,
+  LayoutImageComponent,
+  LayoutModule,
+  LayoutResult,
+  LayoutService,
+  LayoutViewportComponent,
+  PHOTOLOG_LAYOUT_CONFIG,
   provideLayoutConfig,
 } from '@photolog/layout';
-import { PHOTOLOG_LAYOUT_CONFIG } from 'packages/layout/src/lib/layout-config.token';
 import {
   BehaviorSubject,
   debounceTime,
@@ -43,7 +44,7 @@ import {
   tap,
 } from 'rxjs';
 
-type PhotologImageLayout = PhotologLayoutResult<PhotologImage>;
+type PhotologImageLayout = LayoutResult<PhotologImage>;
 
 const initialLayout: PhotologImageLayout = {
   items: [],
@@ -57,9 +58,9 @@ const mapPageImages = (page?: Page) => (page == null ? [] : page.images);
   standalone: true,
   imports: [
     RouterLink,
-    PhotologViewTransitionDirective,
-    PhotologLayoutModule,
-    PlgLayoutImageComponent,
+    ViewTransitionDirective,
+    LayoutModule,
+    LayoutImageComponent,
   ],
   templateUrl: './photo-list.page.html',
   styleUrl: './photo-list.page.scss',
@@ -87,7 +88,7 @@ export class PhotoListPage implements OnInit {
   private readonly platformId = inject(PLATFORM_ID);
   private readonly pagesFacade = inject(PagesFacade);
   private readonly viewportService = inject(ViewportService);
-  private readonly layoutService = inject(PhotologLayoutService);
+  private readonly layoutService = inject(LayoutService);
   private readonly layoutConfig = inject(PHOTOLOG_LAYOUT_CONFIG, {
     optional: true,
   });
@@ -110,7 +111,7 @@ export class PhotoListPage implements OnInit {
   readonly layoutHeight = computed(() => this.layout().containerHeight);
 
   private readonly layoutContainer = viewChild.required(
-    PhotologLayoutViewportComponent,
+    LayoutViewportComponent,
   );
 
   readonly isReComputingLayout = signal(false);
@@ -150,7 +151,7 @@ export class PhotoListPage implements OnInit {
   private readonly shouldAccountForScrollbar = computed(() => {
     const photoCount = this.countImages();
     const idealHeight = this.layoutConfig?.targetRowHeight ?? 245;
-    return idealHeight * photoCount > this.viewportService.size.height;
+    return idealHeight * photoCount > this.viewportService.boundingBox.height;
   });
 
   private computeLayout(items: PhotologImage[]) {

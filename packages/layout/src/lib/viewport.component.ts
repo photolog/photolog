@@ -18,7 +18,7 @@ import { ViewportService } from '@photolog/core';
   changeDetection: ChangeDetectionStrategy.OnPush,
   host: { class: 'plg-layout-viewport' },
 })
-export class PhotologLayoutViewportComponent {
+export class LayoutViewportComponent {
   private readonly elementRef = inject<ElementRef<HTMLDivElement>>(ElementRef);
   private readonly viewportService = inject(ViewportService);
 

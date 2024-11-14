@@ -17,42 +17,41 @@ import { Directive } from '@angular/core';
     '[style.height.px]': 'height()',
   },
 })
-export class PlgBoundingBoxDirective {
+export class BoundingBoxDirective {
   readonly width = input.required<number>();
   readonly height = input.required<number>();
 }
 
-export const PLG_BOUNDING_BOX_HOST_DIRECTIVE = {
-  directive: PlgBoundingBoxDirective,
+export const BOUNDING_BOX_HOST_DIRECTIVE = {
+  directive: BoundingBoxDirective,
   inputs: ['width', 'height'],
 };
 
 @Directive({
   standalone: true,
   selector: '[plgLayoutImagePlaceholder],plg-layout-image-placeholder',
-  //   hostDirectives: [PLG_BOUNDING_BOX_HOST_DIRECTIVE],
   host: {
     class: 'plg-layout-image-placeholder',
   },
 })
-export class PlgLayoutImagePlaceholderDirective {}
+export class LayoutImagePlaceholderDirective {}
 
-export interface PlgLayoutImageComponent extends PlgBoundingBoxDirective {}
+export interface PhotologLayoutImageComponent extends BoundingBoxDirective {}
 
 @Component({
   standalone: true,
-  imports: [PlgLayoutImagePlaceholderDirective],
+  imports: [LayoutImagePlaceholderDirective],
   selector: 'plg-layout-image',
-  templateUrl: 'photolog-image.component.html',
-  styleUrl: 'photolog-image.component.scss',
-  hostDirectives: [PLG_BOUNDING_BOX_HOST_DIRECTIVE],
+  templateUrl: 'layout-image.component.html',
+  styleUrl: 'layout-image.component.scss',
+  hostDirectives: [BOUNDING_BOX_HOST_DIRECTIVE],
   changeDetection: ChangeDetectionStrategy.OnPush,
   encapsulation: ViewEncapsulation.None,
   host: {
     class: 'plg-layout-image',
   },
 })
-export class PlgLayoutImageComponent {
+export class LayoutImageComponent {
   readonly fetchpriority = input<'high' | 'low'>();
   readonly alt = input<string>('');
   readonly src = input.required<string>();

@@ -1,6 +1,6 @@
 import { InjectionToken } from '@angular/core';
-import { PhotologLayoutOptions } from './types';
+import { LayoutOptions } from './types';
 
-export const PHOTOLOG_LAYOUT_CONFIG = new InjectionToken<PhotologLayoutOptions>(
+export const PHOTOLOG_LAYOUT_CONFIG = new InjectionToken<LayoutOptions>(
   'PHOTOLOG_LAYOUT_CONFIG',
 );

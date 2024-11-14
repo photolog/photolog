@@ -1,13 +1,10 @@
 import { inject, Injectable, signal } from '@angular/core';
 import { ViewTransitionInfo } from '@angular/router';
-import { PHOTOLOG_CONFIG } from '../config.token';
 
 export const VIEW_TRANSITION_NAME = 'photolog-image';
 
 @Injectable({ providedIn: 'root' })
-export class PhotologViewTransitionService {
-  private readonly photologConfig = inject(PHOTOLOG_CONFIG, { optional: true });
-
+export class ViewTransitionService {
   readonly currentTransition = signal<ViewTransitionInfo | null>(null);
   readonly isTransitioning = signal(false);
 
@@ -22,7 +19,7 @@ export class PhotologViewTransitionService {
 }
 
 export function onViewTransitionCreated(info: ViewTransitionInfo) {
-  const viewTransitionService = inject(PhotologViewTransitionService);
+  const viewTransitionService = inject(ViewTransitionService);
 
   info.transition.finished.then(() => {
     viewTransitionService.isTransitionComplete.set(true);

@@ -1,19 +1,11 @@
-export type PhotologSlideSourceResolverProps<T> = {
-  data: T;
-  viewportWidth: number;
-  viewportHeight: number;
-};
+import { SlideSourceResolver } from './slide/slide.config';
 
-export type PhotologSlideSourceResolver<T> = (
-  props: PhotologSlideSourceResolverProps<T>,
-) => string;
-
-export interface PhotologLightboxOptions<T = unknown> {
+export interface LightboxOptions<T = unknown> {
   delayImageLoadMs?: number;
   backUrl?: string | URL;
   viewTransitionName?: string;
   viewTransitionRouteIdParam?: string;
-  slideSourceResolver?: PhotologSlideSourceResolver<T>;
+  slideSourceResolver?: SlideSourceResolver<T>;
 }
 
-export type PhotologLightboxConfig = Required<PhotologLightboxOptions>;
+export type LightboxConfig = Required<LightboxOptions>;

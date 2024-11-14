@@ -7,5 +7,9 @@
 .plg-layout-viewport {
   .plg-layout .plg-layout-item {
     position: absolute;
+    contain: layout paint;
+    will-change: transform, opacity;
+    --plg-layout-image-placeholder-bg-color: rgb(230, 230, 230);
+    background-color: var(--plg-layout-image-placeholder-bg-color);
   }
 }

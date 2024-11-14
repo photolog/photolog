@@ -4,7 +4,7 @@ import { Pipe, PipeTransform } from '@angular/core';
   name: 'layoutBoxGeometry',
   standalone: true,
 })
-export class PhotologLayoutBoxGeometryPipe implements PipeTransform {
+export class LayoutBoxGeometryPipe implements PipeTransform {
   transform({
     width,
     height,

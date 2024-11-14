@@ -2,7 +2,7 @@ import { InjectionToken, Provider } from '@angular/core';
 
 import { PhotologConfig, PhotologOptions } from './config';
 import { Feature } from './feature';
-import { deepMerge } from './utils';
+import { deepMerge } from './utils/deepMerge';
 
 /**
  * Injection token to provide Photolog configuration

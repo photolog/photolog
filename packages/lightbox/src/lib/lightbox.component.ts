@@ -1,46 +1,37 @@
-import { CommonModule, DOCUMENT } from '@angular/common';
+import { CommonModule, DOCUMENT, Location } from '@angular/common';
 import {
+  afterNextRender,
   ChangeDetectionStrategy,
   Component,
   computed,
-  OnDestroy,
-  Renderer2,
-  ViewEncapsulation,
-} from '@angular/core';
-
-import { Location } from '@angular/common';
-import {
-  afterNextRender,
   DestroyRef,
   inject,
-  input,
+  OnDestroy,
+  Renderer2,
   signal,
+  ViewEncapsulation,
 } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { MatIconButton } from '@angular/material/button';
 import { MatIcon } from '@angular/material/icon';
 import { Router } from '@angular/router';
-import {
-  PHI,
-  PhotologImage,
-  PhotologViewTransitionDirective,
-  PhotologViewTransitionService,
-} from '@photolog/core';
 import { merge, switchMap } from 'rxjs';
 
+import { ViewTransitionDirective, ViewTransitionService } from '@photolog/core';
+
+import { CarouselComponent } from './carousel/carousel.component';
 import { KeyEventsService } from './common/key-events.service';
-import { PhotologCarouselComponent } from './components/carousel/carousel.component';
-import { PhotologSlideComponent } from './components/slide/slide.component';
-import { PhotologSlide } from './components/slide/slide.interface';
 import { PHOTOLOG_LIGHTBOX_CONFIG } from './config.token';
-import { PhotologBackdropRef } from './directives/backdrop.directive';
+import { BackdropRef } from './directives/backdrop.directive';
 import {
   AnimationVisibilityState,
   fadeAnimation,
   fadeInOutElementAnimation,
 } from './lightbox.animationts';
+import { LightboxState } from './lightbox.store';
+import { PhotologSlideComponent } from './slide/slide.component';
 
-const WITH_PHOTOLOG_CSS = 'with-photolog';
+export const WITH_PHOTOLOG_CSS = 'with-photolog';
 
 /**
  * @note When using the View Transitions API we *cannot* wrap the target of a view transition
@@ -51,10 +42,10 @@ const WITH_PHOTOLOG_CSS = 'with-photolog';
   standalone: true,
   imports: [
     CommonModule,
-    PhotologBackdropRef,
+    BackdropRef,
     PhotologSlideComponent,
-    PhotologCarouselComponent,
-    PhotologViewTransitionDirective,
+    CarouselComponent,
+    ViewTransitionDirective,
     MatIconButton,
     MatIcon,
   ],
@@ -66,10 +57,10 @@ const WITH_PHOTOLOG_CSS = 'with-photolog';
     class: 'plg-lightbox',
     tabindex: '-1',
     role: 'dialog',
-    '[class.is-opening]': 'isOpening()',
+    '[class.is-transitioning]': 'isTransitioning()',
     '[class.is-opened]': 'isOpened()()',
     'aria-modal': 'true',
-    'aria-label': 'Close the container with the Escape key',
+    'aria-label': 'Close the lightbox container by hitting Escape key',
   },
   animations: [
     fadeAnimation({
@@ -77,57 +68,51 @@ const WITH_PHOTOLOG_CSS = 'with-photolog';
       leaveDurationMs: 10,
     }),
     fadeInOutElementAnimation({
-      enterDurationMs: Math.PI * PHI * 100,
+      enterDurationMs: Math.PI * 100,
       leaveDurationMs: 31,
     }),
   ],
 })
-export class PhotologLightboxComponent implements OnDestroy {
+export class LightboxComponent extends LightboxState implements OnDestroy {
   private readonly destroyRef = inject(DestroyRef);
-  private readonly renderer = inject(Renderer2);
   private readonly document = inject(DOCUMENT);
   private readonly location = inject(Location);
-  private readonly viewTransitionService = inject(
-    PhotologViewTransitionService,
-  );
   private readonly router = inject(Router);
+  private readonly renderer = inject(Renderer2);
+
   private readonly keyEventService = inject(KeyEventsService);
-  private readonly config = inject(PHOTOLOG_LIGHTBOX_CONFIG);
+  private readonly viewTransitionService = inject(ViewTransitionService);
+  private readonly config = inject(PHOTOLOG_LIGHTBOX_CONFIG, {
+    optional: true,
+  });
 
-  readonly slides = signal<Partial<PhotologSlide<PhotologImage>>[]>([]);
+  readonly isTransitioning = this.viewTransitionService.isTransitioning;
 
-  readonly activeSlide = computed(() =>
-    this.slides().find((slide) => slide.active),
-  );
-  readonly activeSlideData = input.required<PhotologImage>({ alias: 'photo' });
-  readonly activeSlideId = computed(() => this.activeSlideData()?.id as string);
-  readonly activeSlideCaption = computed(
-    () => this.activeSlideData()?.caption as string,
-  );
+  readonly activeSlide = computed(() => this.state.activeSlide());
+  readonly activeSlideData = computed(() => this.activeSlide()?.data);
+  readonly activeSlideId = computed(() => this.activeSlideData()?.id);
+  readonly activeSlideCaption = computed(() => this.activeSlideData()?.caption);
 
-  readonly animationState = signal<AnimationVisibilityState>(
-    AnimationVisibilityState.Hidden,
-  );
-
-  readonly isOpening = this.viewTransitionService.isTransitioning;
+  readonly animationState = signal(AnimationVisibilityState.Hidden);
+  readonly doneTransitioning = this.viewTransitionService.isTransitionComplete;
 
   readonly isOpened = signal(
     computed(() => {
       if (this.isInitialNavigation()) return true;
-      return this.viewTransitionService.isTransitionComplete();
+      return this.doneTransitioning();
     }),
   );
 
   constructor() {
-    afterNextRender({
-      write: () => {
-        this.applyGlobals();
-        this.animationState.set(AnimationVisibilityState.Visible);
-      },
-      read: () => {
-        this.initSlides();
+    super();
 
+    afterNextRender({
+      read: () => {
         this.setupDOMEventListeners();
+      },
+      write: () => {
+        this.applyGlobalStyles();
+        this.animationState.set(AnimationVisibilityState.Visible);
       },
     });
   }
@@ -138,11 +123,11 @@ export class PhotologLightboxComponent implements OnDestroy {
     const previousNavigation = this.getPrevNavigation();
     if (previousNavigation) {
       // Instead of navigating back with the Angular router, we use Angular's location service
-      // to go back to the previous router url in history and restore the scroll position.
+      // to go back to the previous url in history and restore the scroll position.
       return this.location.back();
     }
 
-    const backUrl = this.config.backUrl.toString();
+    const backUrl = this.config?.backUrl.toString() || '/';
     await this.router.navigateByUrl(backUrl);
 
     this.isOpened.set(signal(false));
@@ -150,17 +135,12 @@ export class PhotologLightboxComponent implements OnDestroy {
   }
 
   ngOnDestroy() {
-    this.removeGlobals();
-  }
-
-  onSlideLoaded() {
-    // if (this.animationState() === AnimationVisibilityState.Hidden) {
-    //   this.animationState.set(AnimationVisibilityState.Visible);
-    // }
+    this.removeGlobalStyles();
   }
 
   private setupDOMEventListeners() {
     const closeOnEscapeKey$ = this.keyEventService.escape$.pipe(
+      // TODO: Only allow closing with ESC key when the image position settled.
       switchMap(() => this.close()),
     );
 
@@ -169,32 +149,12 @@ export class PhotologLightboxComponent implements OnDestroy {
       .subscribe();
   }
 
-  private initSlides() {
-    const currentSlideData = this.activeSlideData();
-    const currentSlide = this.createSlide(currentSlideData, true);
-    const slides = [currentSlide];
-    this.slides.set(slides);
+  private applyGlobalStyles() {
+    this.renderer.addClass(this.document.documentElement, WITH_PHOTOLOG_CSS);
   }
 
-  private createSlide(
-    data: PhotologImage,
-    active = false,
-  ): Partial<PhotologSlide<PhotologImage>> {
-    return {
-      loadImmediately: this.isInitialNavigation(),
-      active,
-      data,
-    };
-  }
-
-  private applyGlobals() {
-    const win = this.document.documentElement;
-    this.renderer.addClass(win, WITH_PHOTOLOG_CSS);
-  }
-
-  private removeGlobals() {
-    const win = this.document.documentElement;
-    this.renderer.removeClass(win, WITH_PHOTOLOG_CSS);
+  private removeGlobalStyles() {
+    this.renderer.removeClass(this.document.documentElement, WITH_PHOTOLOG_CSS);
   }
 
   private isInitialNavigation() {

@@ -9,7 +9,7 @@ import {
 } from '@angular/core';
 import { EventManager } from '@angular/platform-browser';
 import { Observable, Subject, tap } from 'rxjs';
-import { Box2D } from '../utils/geometry';
+import { PositionedRect } from '../utils/geometry';
 
 export const CSS_VAR = {
   scrollbarWidth: '--scrollbar-width',
@@ -28,26 +28,19 @@ export class ViewportService {
   // eslint-disable-next-line @typescript-eslint/no-unsafe-function-type
   private resizeHandlerFn?: Function;
 
-  private readonly geometry_ = signal<Box2D>({
+  private readonly boundingBox_ = signal<PositionedRect>({
     left: 0,
     top: 0,
     height: 0,
     width: 0,
   });
 
-  get size(): Box2D {
-    return this.geometry_();
-  }
-
-  /**
-   * @deprecated Use {@link ViewportService.size}
-   */
-  get geometry(): Box2D {
-    return this.geometry_();
+  get boundingBox(): PositionedRect {
+    return this.boundingBox_();
   }
 
   readonly isReady = computed(() => {
-    const { height, width } = this.geometry_();
+    const { height, width } = this.boundingBox;
     return width > 0 && height > 0;
   });
 
@@ -57,13 +50,13 @@ export class ViewportService {
     this.resizeSubject = new Subject();
     this.onResize$ = this.resizeSubject
       .asObservable()
-      .pipe(tap(() => this.updateGeometry()));
+      .pipe(tap(() => this.updateBoundingBox()));
 
     this.attachResizeListener();
 
     afterNextRender({
       read: () => {
-        this.updateGeometry();
+        this.updateBoundingBox();
       },
       write: () => {
         this.setScrollbarWidth();
@@ -138,12 +131,12 @@ export class ViewportService {
     );
   }
 
-  private readonly updateGeometry = () => {
+  private readonly updateBoundingBox = () => {
     const geometry = {
-      ...this.geometry_(),
+      ...this.boundingBox_(),
       width: this.document.documentElement.clientWidth,
       height: this.document.documentElement.clientHeight,
     };
-    this.geometry_.update((curr) => ({ ...curr, ...geometry }));
+    this.boundingBox_.update((curr) => ({ ...curr, ...geometry }));
   };
 }

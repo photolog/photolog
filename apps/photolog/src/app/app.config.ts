@@ -17,21 +17,22 @@ import { provideEffects } from '@ngrx/effects';
 import { provideStore } from '@ngrx/store';
 import { provideStoreDevtools } from '@ngrx/store-devtools';
 import {
-  fitImageInArea,
   onViewTransitionCreated,
   PhotologImage,
   providePhotolog,
   round,
+  scaleImageToFit,
 } from '@photolog/core';
 import { withLayout } from '@photolog/layout';
-import { PhotologSlideSourceResolver, withLightbox } from '@photolog/lightbox';
+// eslint-disable-next-line @nx/enforce-module-boundaries
+import { SlideSourceResolver, withLightbox } from '@photolog/lightbox';
 import { generateThumbUrl } from 'packages/data-access-images/src/lib/utils/picsum-api';
 import { appRoutes } from './app.routes';
 
-const photologSlideSourceResolver: PhotologSlideSourceResolver<
-  PhotologImage
-> = (props) => {
-  const { height, width } = fitImageInArea(
+const photologSlideSourceResolver: SlideSourceResolver<PhotologImage> = (
+  props,
+) => {
+  const { height, width } = scaleImageToFit(
     props.data.width,
     props.data.height,
     props.viewportWidth,

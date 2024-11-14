@@ -1,11 +1,11 @@
 import { Feature, FeatureType } from '@photolog/core';
 import { provideLayoutConfig } from './layout.provider';
-import { PhotologLayoutService } from './layout.service';
-import { PhotologLayoutOptions } from './types';
+import { LayoutService } from './layout.service';
+import { LayoutOptions } from './types';
 
-export function withLayout(options?: PhotologLayoutOptions): Feature {
+export function withLayout(options?: LayoutOptions): Feature {
   return {
     type: FeatureType.Layout,
-    providers: [provideLayoutConfig(options), PhotologLayoutService],
+    providers: [provideLayoutConfig(options), LayoutService],
   };
 }

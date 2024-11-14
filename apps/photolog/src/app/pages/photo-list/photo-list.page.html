@@ -4,12 +4,13 @@
 
   <plg-layout [height]="containerHeight">
     @for (item of items; track item.data.id; let index = $index) {
-      <plg-layout-item [geometry]="item.box" [plgViewTransition]="item.data.id">
+      <plg-layout-item [geometry]="item.box">
         <a class="relative" [routerLink]="['', 'photos', item.data.id]">
           <plg-layout-image
             [width]="item.box.width"
             [height]="item.box.height"
             [src]="item.data.thumbnail.src"
+            [plgViewTransition]="item.data.id"
           >
           </plg-layout-image>
           <div class="sr-only opacity-0">

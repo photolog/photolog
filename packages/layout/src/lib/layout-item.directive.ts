@@ -6,7 +6,7 @@ import {
   input,
   ViewEncapsulation,
 } from '@angular/core';
-import { PhotologLayoutBoxGeometryPipe } from './layout-box.pipe';
+import { LayoutBoxGeometryPipe } from './layout-box.pipe';
 import { LayoutBox } from './types';
 
 @Component({
@@ -20,8 +20,8 @@ import { LayoutBox } from './types';
     '[style]': 'styles()',
   },
 })
-export class PhotologLayoutItemDirective {
-  private readonly geometryPipe = inject(PhotologLayoutBoxGeometryPipe);
+export class LayoutItemComponent {
+  private readonly geometryPipe = inject(LayoutBoxGeometryPipe);
 
   readonly geometry = input.required<LayoutBox>();
 

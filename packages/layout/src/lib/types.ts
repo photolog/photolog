@@ -61,7 +61,7 @@ export interface LayoutBox {
  * Public-facing options for configuring the justified layout,
  * excluding internal properties managed by the layout function.
  */
-export type PhotologLayoutOptions = Omit<
+export type LayoutOptions = Omit<
   JustifiedLayoutOptionsInternal,
   InternalLayoutProps
 >;
@@ -71,22 +71,23 @@ export type PhotologLayoutOptions = Omit<
  * This is a user-defined data type that includes the necessary metadata
  * (such as width and height) for each image or content block.
  */
-export type PhotologLayoutItem = JustifiedLayoutItemInternal;
+export type LayoutItem = JustifiedLayoutItemInternal;
 
-export type PhotologLayoutResultItem<
-  I extends PhotologLayoutItem = PhotologLayoutItem,
-> = { box: LayoutBox; data: I };
+export type LayoutResultItem<I extends LayoutItem = LayoutItem> = {
+  box: LayoutBox;
+  data: I;
+};
 
 /**
  * Represents the layout result for a photo gallery.
  * Each item in the gallery is associated with a layout box and user-defined data.
  */
-export type PhotologLayoutResult<I extends PhotologLayoutItem> = Omit<
+export type LayoutResult<I extends LayoutItem> = Omit<
   JustifiedLayoutResult,
   'boxes'
 > & {
   /**
    * Items array where each entry includes the layout box dimensions and item data.
    */
-  items: PhotologLayoutResultItem<I>[];
+  items: LayoutResultItem<I>[];
 };

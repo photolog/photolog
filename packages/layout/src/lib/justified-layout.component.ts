@@ -22,7 +22,7 @@ import {
     '[class.plg-justified-layout]': 'justified()',
   },
 })
-export class PhotologLayoutComponent {
+export class LayoutComponent {
   private readonly justified = signal(true);
 
   readonly height = input(0);

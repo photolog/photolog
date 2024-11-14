@@ -3,17 +3,17 @@ import { deepMerge } from '@photolog/core';
 import createJustifiedLayout from 'justified-layout';
 import { PHOTOLOG_LAYOUT_CONFIG } from './layout-config.token';
 import {
-  PhotologLayoutItem,
-  PhotologLayoutOptions,
-  PhotologLayoutResult,
+  LayoutItem,
+  LayoutOptions,
+  LayoutResult,
 } from './types';
 
 /**
  * Configuration object for generating a justified layout.
  * @template I - The type of item data, extending `PhotologLayoutItem`.
  */
-export type GenerateLayoutConfig<I extends PhotologLayoutItem> =
-  Partial<PhotologLayoutOptions> & {
+export type GenerateLayoutConfig<I extends LayoutItem> =
+  Partial<LayoutOptions> & {
     /** Width of the container for layout calculation */
     containerWidth: number;
     /** Array of items to include in the layout */
@@ -21,7 +21,7 @@ export type GenerateLayoutConfig<I extends PhotologLayoutItem> =
   };
 
 @Injectable()
-export class PhotologLayoutService {
+export class LayoutService {
   /**
    * Optional layout configuration token that provides default layout options.
    */
@@ -33,11 +33,11 @@ export class PhotologLayoutService {
    * @param GenerateLayoutConfig<I> - Configuration options for the layout generation.
    * @returns PhotologLayoutResult<I> - The generated layout with box dimensions and positions.
    */
-  generateLayout<I extends PhotologLayoutItem>({
+  generateLayout<I extends LayoutItem>({
     items: layoutItems,
     containerWidth,
     ...options
-  }: GenerateLayoutConfig<I>): PhotologLayoutResult<I> {
+  }: GenerateLayoutConfig<I>): LayoutResult<I> {
     // Merge user options with any default configuration from the injected token
     const mergedConfig = deepMerge(this.config ?? {}, options);
     const config = { ...mergedConfig, containerWidth };

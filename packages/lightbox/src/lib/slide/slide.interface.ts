@@ -1,17 +1,15 @@
-import { Box2D, deepMerge } from '@photolog/core';
+import { PositionedRect, deepMerge, PhotologImage } from '@photolog/core';
 
-export type SlideGeometry = Box2D & {
+export type SlideGeometry = PositionedRect & {
   originalWidth: number;
   originalHeight: number;
 };
 
-export type PhotologSlideData = {
+export type SlideData = {
   [key: string]: unknown;
 };
 
-export interface PhotologSlide<
-  T extends PhotologSlideData = PhotologSlideData,
-> {
+export interface Slide<T extends SlideData = SlideData> {
   type: 'img';
   loading: boolean;
   loaded: boolean;
@@ -22,6 +20,9 @@ export interface PhotologSlide<
   active: boolean;
 }
 
+export type ImageSlide = Slide<PhotologImage>;
+export type PartialImageSlide = Partial<ImageSlide>;
+
 const emptySlideGeometry: SlideGeometry = {
   originalHeight: 0,
   originalWidth: 0,
@@ -31,9 +32,7 @@ const emptySlideGeometry: SlideGeometry = {
   top: 0,
 };
 
-export interface CreateEmptySlideOptions<
-  T extends PhotologSlideData = PhotologSlideData,
-> {
+export interface CreateEmptySlideOptions<T extends SlideData = SlideData> {
   data?: T;
   index?: number;
   geometry?: SlideGeometry;
@@ -41,14 +40,12 @@ export interface CreateEmptySlideOptions<
   active?: boolean;
 }
 
-export function createEmptySlide<
-  T extends PhotologSlideData = PhotologSlideData,
->({
+export function createEmptySlide<T extends SlideData = SlideData>({
   geometry,
   index,
   data,
   ...additionalProps
-}: CreateEmptySlideOptions<T> = {}): PhotologSlide<T> {
+}: CreateEmptySlideOptions<T> = {}): Slide<T> {
   const mergedGeometry = deepMerge(
     emptySlideGeometry as never,
     geometry as never,

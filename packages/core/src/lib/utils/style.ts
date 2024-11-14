@@ -1,13 +1,8 @@
-export type BoxPadding = {
-  top: number;
-  right: number;
-  bottom: number;
-  left: number;
-};
+import { Offset } from './geometry';
 
-type PaddingConfig = number | Partial<BoxPadding>;
+type PaddingConfig = number | Partial<Offset>;
 
-export function normalizePadding(config?: PaddingConfig): BoxPadding {
+export function normalizePadding(config?: PaddingConfig): Offset {
   if (typeof config === 'number') {
     // If `config` is a number, apply it to all sides.
     return { top: config, right: config, bottom: config, left: config };

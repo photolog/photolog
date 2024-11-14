@@ -9,26 +9,28 @@ import { photoResolver } from './resolvers/photo.resolver';
 export const appRoutes: Route[] = [
   {
     path: 'photos',
-    resolve: {
-      queryParams: queryParamsResolver,
-    },
     runGuardsAndResolvers: 'paramsOrQueryParamsChange',
-    loadComponent: () =>
-      import('./pages/photo-list/photo-list.page').then(
-        (mod) => mod.PhotoListPage,
-      ),
     providers: [
       provideState(fromImages.PAGES_FEATURE_KEY, fromImages.pagesReducer),
       provideEffects(fromImages.ImagesEffects, fromImages.PagesEffects),
     ],
+    resolve: {
+      queryParams: queryParamsResolver,
+    },
+    loadComponent: () =>
+      import('./pages/photo-list/photo-list.page').then(
+        (mod) => mod.PhotoListPage,
+      ),
   },
   {
     path: 'photos/:photoId',
     resolve: {
       photo: photoResolver,
+      images: photoResolver,
+      activeIndex: () => 0,
     },
     loadComponent: () =>
-      import('@photolog/lightbox').then((mod) => mod.PhotologLightboxComponent),
+      import('@photolog/lightbox').then((mod) => mod.LightboxComponent),
   },
   {
     path: '',

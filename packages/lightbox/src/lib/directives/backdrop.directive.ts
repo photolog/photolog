@@ -8,7 +8,7 @@ import { Directive, ElementRef, OnDestroy, inject } from '@angular/core';
   },
 })
 // eslint-disable-next-line @angular-eslint/directive-class-suffix
-export class PhotologBackdropRef implements OnDestroy {
+export class BackdropRef implements OnDestroy {
   readonly elementRef = inject(ElementRef);
 
   ngOnDestroy(): void {

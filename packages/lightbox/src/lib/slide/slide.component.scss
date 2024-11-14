@@ -14,6 +14,7 @@
     justify-content: center;
     user-select: none;
     flex: 1;
+    contain: layout;
 
     img {
       flex: 1;
@@ -25,6 +26,7 @@
       pointer-events: none;
       border: none;
       outline: none;
+      contain: layout;
     }
 
     .plg-progress-spinner {

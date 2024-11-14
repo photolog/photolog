@@ -15,4 +15,4 @@ import {
     class: 'plg-carousel',
   },
 })
-export class PhotologCarouselComponent {}
+export class CarouselComponent {}

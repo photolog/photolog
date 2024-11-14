@@ -16,6 +16,6 @@ import {
     class: 'plg-progress-spinner',
   },
 })
-export class PhotologProgressSpinnerComponent {
+export class ProgressSpinnerComponent {
   readonly diameter = input(20);
 }

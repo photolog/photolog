@@ -4,7 +4,7 @@ import { Store } from '@ngrx/store';
 import { catchError, map, of, switchMap } from 'rxjs';
 import { PhotologImageDataService } from '../../image-data.service';
 import * as ImagesActions from './images.actions';
-import { selectImage } from './images.selectors';
+import { selectImageEntity } from './images.selectors';
 
 @Injectable()
 export class ImagesEffects {
@@ -13,7 +13,7 @@ export class ImagesEffects {
   private readonly store = inject(Store);
 
   private _loadImage(imageId: string, page?: number) {
-    const imageFromStor$ = this.store.select(selectImage(imageId));
+    const imageFromStor$ = this.store.select(selectImageEntity(imageId));
     return imageFromStor$.pipe(
       switchMap((image) => {
         if (image == null) {

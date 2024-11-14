@@ -2,8 +2,14 @@
   "name": "@photolog/lightbox",
   "version": "0.0.1",
   "peerDependencies": {
+    "@angular/animations": "^18.2.0",
     "@angular/common": "^18.2.0",
-    "@angular/core": "^18.2.0"
+    "@angular/core": "^18.2.0",
+    "@angular/router": "^18.2.0",
+    "@angular/material": "^18.2.0",
+    "@photolog/core": "^0.0.1",
+    "ngxtension": "4.1.0",
+    "rxjs": "7.8.1"
   },
   "sideEffects": false
 }

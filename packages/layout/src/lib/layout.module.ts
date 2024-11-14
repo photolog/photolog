@@ -1,18 +1,18 @@
 import { NgModule } from '@angular/core';
-import { PhotologLayoutComponent } from './justified-layout.component';
-import { PhotologLayoutBoxGeometryPipe } from './layout-box.pipe';
-import { PhotologLayoutItemDirective } from './layout-item.directive';
-import { PhotologLayoutViewportComponent } from './viewport.component';
+import { LayoutComponent } from './justified-layout.component';
+import { LayoutBoxGeometryPipe } from './layout-box.pipe';
+import { LayoutItemComponent } from './layout-item.directive';
+import { LayoutViewportComponent } from './viewport.component';
 
 const MODULES = [
-  PhotologLayoutComponent,
-  PhotologLayoutItemDirective,
-  PhotologLayoutViewportComponent,
+  LayoutComponent,
+  LayoutItemComponent,
+  LayoutViewportComponent,
 ];
 
 @NgModule({
   imports: MODULES,
   exports: MODULES,
-  providers: [PhotologLayoutBoxGeometryPipe],
+  providers: [LayoutBoxGeometryPipe],
 })
-export class PhotologLayoutModule {}
+export class LayoutModule {}

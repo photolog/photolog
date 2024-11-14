@@ -1,3 +1,4 @@
+import { isPlatformBrowser } from '@angular/common';
 import {
   ChangeDetectionStrategy,
   Component,
@@ -5,6 +6,7 @@ import {
   inject,
   input,
   output,
+  PLATFORM_ID,
   Signal,
   signal,
   ViewEncapsulation,
@@ -13,25 +15,24 @@ import { takeUntilDestroyed, toObservable } from '@angular/core/rxjs-interop';
 import {
   decodeImage,
   deepMerge,
-  fitImageInArea,
-  PhotologImage,
   round,
+  scaleImageToFit,
   ViewportService,
 } from '@photolog/core';
 import { signalSlice } from 'ngxtension/signal-slice';
 import { finalize, switchMap, takeWhile, tap } from 'rxjs';
-import { PHOTOLOG_LIGHTBOX_CONFIG } from '../../config.token';
-import { fadeAnimation } from '../../lightbox.animationts';
-import { PhotologProgressSpinnerComponent } from '../progress-spinner/loading-spinner.component';
+
+import { ProgressSpinnerComponent } from '../components/progress-spinner/loading-spinner.component';
+import { PHOTOLOG_LIGHTBOX_CONFIG } from '../config.token';
+import { fadeAnimation } from '../lightbox.animationts';
 import {
   createEmptySlide,
-  PhotologSlide,
+  ImageSlide,
+  PartialImageSlide,
   SlideGeometry,
 } from './slide.interface';
 
-export type PhotologImageSlide = PhotologSlide<PhotologImage>;
-
-const checkSlideHasImage = (slide?: PhotologImageSlide): boolean => {
+const checkSlideHasImage = (slide?: ImageSlide): boolean => {
   return [
     slide != null,
     slide?.data.src != null,
@@ -44,7 +45,7 @@ const checkSlideHasImage = (slide?: PhotologImageSlide): boolean => {
   selector: 'plg-slide',
   templateUrl: 'slide.component.html',
   styleUrl: 'slide.component.scss',
-  imports: [PhotologProgressSpinnerComponent],
+  imports: [ProgressSpinnerComponent],
   // NgOptimizedImage,
   encapsulation: ViewEncapsulation.None,
   changeDetection: ChangeDetectionStrategy.OnPush,
@@ -61,20 +62,18 @@ const checkSlideHasImage = (slide?: PhotologImageSlide): boolean => {
   ],
 })
 export class PhotologSlideComponent {
+  private readonly platformId = inject(PLATFORM_ID);
   private readonly viewportService = inject(ViewportService);
   private readonly lightboxConfig = inject(PHOTOLOG_LIGHTBOX_CONFIG);
 
-  readonly externalConfig = input<Partial<PhotologImageSlide>>(
-    {},
-    { alias: 'slide' },
-  );
+  readonly externalConfig = input<PartialImageSlide>({}, { alias: 'slide' });
 
   readonly contentLoaded = output<this>({});
 
-  private readonly internalConfig = signal<Partial<PhotologImageSlide>>({});
+  private readonly internalConfig = signal<PartialImageSlide>({});
 
   readonly state = signalSlice({
-    initialState: createEmptySlide() as PhotologImageSlide,
+    initialState: createEmptySlide() as ImageSlide,
     sources: [
       toObservable(this.externalConfig),
       toObservable(this.internalConfig),
@@ -97,6 +96,7 @@ export class PhotologSlideComponent {
 
   private readonly loadSlideWhenActive$ = this.isActive$
     .pipe(
+      takeWhile(() => isPlatformBrowser(this.platformId)),
       takeWhile((active) => {
         const hasImage = checkSlideHasImage(this.state());
         const alreadyLoaded = this.state.loaded();
@@ -112,7 +112,7 @@ export class PhotologSlideComponent {
     const { width, height } = this.state.data();
     const { innerWidth: viewportWidth, innerHeight: viewportHeight } =
       this.viewportService.getWindow();
-    const geometry = fitImageInArea(
+    const geometry = scaleImageToFit(
       width,
       height,
       viewportWidth,
@@ -124,7 +124,6 @@ export class PhotologSlideComponent {
 
   private loadImage() {
     this.updateState({ loading: true });
-
     const src = this.resolveSource();
     return decodeImage(src).pipe(
       tap(() => {
@@ -142,13 +141,13 @@ export class PhotologSlideComponent {
     const data = this.state.data();
     const resolvedSrc = this.lightboxConfig?.slideSourceResolver?.({
       data,
-      viewportWidth: this.viewportService.size.width,
-      viewportHeight: this.viewportService.size.height,
+      viewportWidth: this.viewportService.boundingBox.width,
+      viewportHeight: this.viewportService.boundingBox.height,
     });
     return resolvedSrc || data.src;
   }
 
-  private updateState(config: Partial<PhotologImageSlide>) {
+  private updateState(config: PartialImageSlide) {
     this.internalConfig.update((curr) => deepMerge(curr, config));
   }
 

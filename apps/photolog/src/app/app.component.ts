@@ -18,7 +18,7 @@ import {
 } from '@angular/material/sidenav';
 import { MatToolbar } from '@angular/material/toolbar';
 import { RouterLink, RouterLinkActive, RouterOutlet } from '@angular/router';
-import { supportsViewTransitionsAPI } from '@photolog/core';
+import { supportsViewTransitions } from '@photolog/core';
 import { map, Observable, tap } from 'rxjs';
 import { UnsupportedBrowserDialogComponent } from './dialogs/unsupported-browser-dialog/unsupported-browser-dialog.component';
 
@@ -106,7 +106,7 @@ export class AppComponent {
   }
 
   private showUnsupportedBrowserNoticeIfNecessary(): void {
-    if (supportsViewTransitionsAPI()) return;
+    if (supportsViewTransitions()) return;
 
     const userAlreadyViewedNotice = coerceBooleanProperty(
       localStorage.getItem(UNSUPPORTED_BROWSER_NOTICE_CONSENT),

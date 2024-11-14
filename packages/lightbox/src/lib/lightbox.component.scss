@@ -28,7 +28,7 @@
   z-index: 98;
 }
 
-.is-opening.plg-lightbox .plg-backdrop,
+.is-transitioning.plg-lightbox .plg-backdrop,
 .is-opened.plg-lightbox .plg-backdrop {
   opacity: 1;
 }

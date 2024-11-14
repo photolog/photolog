@@ -1,7 +1,7 @@
 import { computed, Directive, inject, input } from '@angular/core';
 import { ActivatedRouteSnapshot } from '@angular/router';
 import { defaultPhotologOptions, PHOTOLOG_CONFIG } from '../config.token';
-import { PhotologViewTransitionService } from './view-transition.service';
+import { ViewTransitionService } from './view-transition.service';
 
 export type ViewTransitionDirectiveOptions = {
   /** The name of the transition */
@@ -22,14 +22,12 @@ export type ViewTransitionDirectiveConfig =
   standalone: true,
   host: { '[style.view-transition-name]': 'viewTransitionName()' },
 })
-export class PhotologViewTransitionDirective {
+export class ViewTransitionDirective {
   private readonly photologConfig = inject(PHOTOLOG_CONFIG, { optional: true });
 
-  private readonly viewTranistionService = inject(
-    PhotologViewTransitionService,
-  );
+  private readonly viewTranistionService = inject(ViewTransitionService);
 
-  readonly _viewTransitionId = input.required<string>({
+  readonly _viewTransitionId = input<string | undefined>(undefined, {
     alias: 'plgViewTransition',
   });
 

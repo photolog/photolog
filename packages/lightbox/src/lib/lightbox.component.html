@@ -1,6 +1,6 @@
 <plg-backdrop @fade></plg-backdrop>
 
-@defer (when isOpened()) {
+@defer (when doneTransitioning()) {
   <nav class="plg-lightbox-toolbar" [@fadeInOutElement]="animationState()">
     <button mat-icon-button (click)="close()">
       <mat-icon>arrow_back</mat-icon>
@@ -9,17 +9,18 @@
 }
 
 <plg-carousel>
-  @for (slide of slides(); track $index) {
+  @for (slide of state.slides(); track $index) {
     <plg-slide
       [slide]="slide"
       [plgViewTransition]="activeSlideId()"
-      (contentLoaded)="onSlideLoaded()"
     ></plg-slide>
   }
 </plg-carousel>
 
-@defer (when isOpened() && activeSlideCaption()) {
-  <footer class="plg-lightbox-footer" [@fadeInOutElement]="animationState()">
-    <span class="plg-lightbox-caption">{{ activeSlideCaption() }}</span>
-  </footer>
+@defer (when doneTransitioning()) {
+  @if (activeSlideCaption(); as caption) {
+    <footer class="plg-lightbox-footer" [@fadeInOutElement]="animationState()">
+      <span class="plg-lightbox-caption">{{ caption }}</span>
+    </footer>
+  }
 }
