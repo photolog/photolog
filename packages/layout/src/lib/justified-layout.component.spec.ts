@@ -1,16 +1,16 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { JustifiedLayoutComponent } from './justified-layout.component';
+import { LayoutComponent } from './justified-layout.component';
 
 describe('JustifiedLayoutComponent', () => {
-  let component: JustifiedLayoutComponent;
-  let fixture: ComponentFixture<JustifiedLayoutComponent>;
+  let component: LayoutComponent;
+  let fixture: ComponentFixture<LayoutComponent>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [JustifiedLayoutComponent],
+      imports: [LayoutComponent],
     }).compileComponents();
 
-    fixture = TestBed.createComponent(JustifiedLayoutComponent);
+    fixture = TestBed.createComponent(LayoutComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });
