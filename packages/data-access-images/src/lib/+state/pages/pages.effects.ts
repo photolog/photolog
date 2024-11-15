@@ -1,23 +1,23 @@
-// photolog.effects.ts
 import { inject, Injectable } from '@angular/core';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
 import { Store } from '@ngrx/store';
 import { PhotologImage } from '@photolog/core';
 import { catchError, EMPTY, map, of, switchMap } from 'rxjs';
-import { PhotologImageDataService } from '../../image-data.service';
-import { ImageEntity } from '../images/images.models';
-import * as PagesActions from './pages.actions';
+
+import { ImageDataService } from '../../image-data.service';
+import * as ImagePagesActions from './pages.actions';
+import { ImageEntity } from './pages.models';
 import { selectPage } from './pages.selectors';
 
 @Injectable()
-export class PagesEffects {
+export class ImagePagesEffects {
   private readonly store = inject(Store);
   private readonly actions$ = inject(Actions);
-  private readonly dataService = inject(PhotologImageDataService);
+  private readonly dataService = inject(ImageDataService);
 
   loadPage$ = createEffect(() =>
     this.actions$.pipe(
-      ofType(PagesActions.loadPage),
+      ofType(ImagePagesActions.loadPage),
       switchMap((props) => this._loadPage(props)),
     ),
   );
@@ -26,7 +26,7 @@ export class PagesEffects {
     page,
     limit,
     select: shouldSelect,
-  }: PagesActions.LoadPageProps) {
+  }: ImagePagesActions.LoadPageProps) {
     page = Number(page);
     const pageFromStor$ = this.store.select(selectPage(page));
     return pageFromStor$.pipe(
@@ -36,20 +36,22 @@ export class PagesEffects {
           return pageFromRemote$.pipe(
             map((images) => this.mapPageToImages(page, images)),
             map((images) =>
-              PagesActions.loadPageSuccess({
+              ImagePagesActions.loadPageSuccess({
                 page,
                 images,
                 select: shouldSelect,
               }),
             ),
             catchError((error) =>
-              of(PagesActions.loadPageFailure({ page, error })),
+              of(ImagePagesActions.loadPageFailure({ page, error })),
             ),
           );
         }
 
         if (shouldSelect) {
-          return of(PagesActions.setSelectedPage({ page }) as never) as never;
+          return of(
+            ImagePagesActions.setSelectedPage({ page }) as never,
+          ) as never;
         }
 
         return EMPTY;

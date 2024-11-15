@@ -1,5 +1,5 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { LayoutComponent } from './justified-layout.component';
+import { LayoutComponent } from './layout.component';
 
 describe('JustifiedLayoutComponent', () => {
   let component: LayoutComponent;

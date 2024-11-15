@@ -4,7 +4,7 @@ import { deepMerge, PHI } from '@photolog/core';
 import {
   LightboxOptions as LightboxOptions,
   LightboxConfig,
-} from './config';
+} from './lightbox.config';
 
 /**
  * Injection token to provide Photolog configuration

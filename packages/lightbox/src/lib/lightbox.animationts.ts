@@ -6,6 +6,8 @@ import {
   trigger,
 } from '@angular/animations';
 
+// TODO: Add a more generic animation trigger for fading in/out lightbox elements.
+
 export interface FadeAnimationOptions {
   enterDurationMs?: number;
   leaveDurationMs?: number;

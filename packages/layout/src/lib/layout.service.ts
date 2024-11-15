@@ -1,12 +1,9 @@
 import { inject, Injectable } from '@angular/core';
 import { deepMerge } from '@photolog/core';
 import createJustifiedLayout from 'justified-layout';
-import { PHOTOLOG_LAYOUT_CONFIG } from './layout-config.token';
-import {
-  LayoutItem,
-  LayoutOptions,
-  LayoutResult,
-} from './types';
+
+import { PHOTOLOG_LAYOUT_CONFIG } from './layout.tokens';
+import { LayoutItem, LayoutOptions, LayoutResult } from './types';
 
 /**
  * Configuration object for generating a justified layout.
@@ -42,7 +39,6 @@ export class LayoutService {
     const mergedConfig = deepMerge(this.config ?? {}, options);
     const config = { ...mergedConfig, containerWidth };
 
-    // Generate the layout using `createJustifiedLayout`
     const { boxes, containerHeight, widowCount } = createJustifiedLayout(
       layoutItems,
       config,

@@ -24,7 +24,7 @@ import {
   ViewportService,
   ViewTransitionDirective,
 } from '@photolog/core';
-import { LoadPageProps, Page, PagesFacade } from '@photolog/data-access-images';
+import { LoadPageProps, ImagePage, ImagePagesFacade } from '@photolog/data-access-images';
 import {
   LayoutImageComponent,
   LayoutModule,
@@ -52,7 +52,7 @@ const initialLayout: PhotologImageLayout = {
   widowCount: 0,
 };
 
-const mapPageImages = (page?: Page) => (page == null ? [] : page.images);
+const mapPageImages = (page?: ImagePage) => (page == null ? [] : page.images);
 
 @Component({
   standalone: true,
@@ -86,7 +86,7 @@ const mapPageImages = (page?: Page) => (page == null ? [] : page.images);
 // eslint-disable-next-line @angular-eslint/component-class-suffix
 export class PhotoListPage implements OnInit {
   private readonly platformId = inject(PLATFORM_ID);
-  private readonly pagesFacade = inject(PagesFacade);
+  private readonly pagesFacade = inject(ImagePagesFacade);
   private readonly viewportService = inject(ViewportService);
   private readonly layoutService = inject(LayoutService);
   private readonly layoutConfig = inject(PHOTOLOG_LAYOUT_CONFIG, {

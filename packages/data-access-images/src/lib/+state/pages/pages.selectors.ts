@@ -1,9 +1,9 @@
 import { createFeatureSelector, createSelector } from '@ngrx/store';
-import { PAGES_FEATURE_KEY, pagesAdapter, PagesState } from './pages.reducer';
-import { selectAllImages } from '../images/images.selectors';
+import { PAGES_FEATURE_KEY, pagesAdapter, ImagePagesState } from './pages.reducer';
+// import { selectAllImages } from '../images/images.selectors';
 
 export const selectPagesState =
-  createFeatureSelector<PagesState>(PAGES_FEATURE_KEY);
+  createFeatureSelector<ImagePagesState>(PAGES_FEATURE_KEY);
 
 const { selectAll, selectEntities } = pagesAdapter.getSelectors();
 
@@ -27,9 +27,9 @@ export const selectSelectedPage = createSelector(
   (entities, selectedId) => (selectedId ? entities[selectedId] : undefined),
 );
 
-export const selectSelectedPageImages = createSelector(
-  selectAllImages,
-  selectSelectedPageId,
-  (images, page) =>
-    images.filter((image) => image.page != null && image.page === page),
-);
+// export const selectSelectedPageImages = createSelector(
+//   selectAllImages,
+//   selectSelectedPageId,
+//   (images, page) =>
+//     images.filter((image) => image.page != null && image.page === page),
+// );

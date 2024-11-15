@@ -1,6 +1,6 @@
 // photolog.actions.ts
 import { createAction, props } from '@ngrx/store';
-import { ImageEntity } from '../images/images.models';
+import { ImageEntity } from './pages.models';
 
 export interface LoadPageProps {
   page: number;

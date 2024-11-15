@@ -21,29 +21,25 @@ import { ViewTransitionDirective, ViewTransitionService } from '@photolog/core';
 
 import { CarouselComponent } from './carousel/carousel.component';
 import { KeyEventsService } from './common/key-events.service';
-import { PHOTOLOG_LIGHTBOX_CONFIG } from './config.token';
-import { BackdropRef } from './directives/backdrop.directive';
+import { PHOTOLOG_LIGHTBOX_CONFIG } from './lightbox.tokens';
+import { BackdropRefDirective } from './common/directives/backdrop.directive';
 import {
   AnimationVisibilityState,
   fadeAnimation,
   fadeInOutElementAnimation,
 } from './lightbox.animationts';
 import { LightboxState } from './lightbox.store';
-import { PhotologSlideComponent } from './slide/slide.component';
+import { SlideComponent } from './slide/slide.component';
 
 export const WITH_PHOTOLOG_CSS = 'with-photolog';
 
-/**
- * @note When using the View Transitions API we *cannot* wrap the target of a view transition
- *       or any of its parents inside an *ngIf block.
- */
 @Component({
   selector: 'plg-lightbox',
   standalone: true,
   imports: [
     CommonModule,
-    BackdropRef,
-    PhotologSlideComponent,
+    BackdropRefDirective,
+    SlideComponent,
     CarouselComponent,
     ViewTransitionDirective,
     MatIconButton,
@@ -96,9 +92,13 @@ export class LightboxComponent extends LightboxState implements OnDestroy {
   readonly animationState = signal(AnimationVisibilityState.Hidden);
   readonly doneTransitioning = this.viewTransitionService.isTransitionComplete;
 
+  // TODO: This needs a more tailored computation for the `opening` sequence.
   readonly isOpened = signal(
     computed(() => {
-      if (this.isInitialNavigation()) return true;
+      if (this.isInitialNavigation()) {
+        // Trigger immediately when there is no successful, previous navigation info.
+        return true;
+      }
       return this.doneTransitioning();
     }),
   );
@@ -112,7 +112,6 @@ export class LightboxComponent extends LightboxState implements OnDestroy {
       },
       write: () => {
         this.applyGlobalStyles();
-        this.animationState.set(AnimationVisibilityState.Visible);
       },
     });
   }
@@ -138,9 +137,13 @@ export class LightboxComponent extends LightboxState implements OnDestroy {
     this.removeGlobalStyles();
   }
 
+  protected onSlideContentSettled() {
+    this.animationState.set(AnimationVisibilityState.Visible);
+  }
+
   private setupDOMEventListeners() {
+    // TODO: Only allow closing with ESC key when the slide content is settled.
     const closeOnEscapeKey$ = this.keyEventService.escape$.pipe(
-      // TODO: Only allow closing with ESC key when the image position settled.
       switchMap(() => this.close()),
     );
 

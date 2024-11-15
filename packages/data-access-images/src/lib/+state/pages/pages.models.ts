@@ -1,6 +1,13 @@
-import { ImageEntity } from '../images/images.models';
+import { PhotologImage } from '@photolog/core';
 
-export interface Page {
+/**
+ * Interface for the 'Images' data
+ */
+export interface ImageEntity extends PhotologImage {
+  page?: number;
+}
+
+export interface ImagePage {
   index: number;
   loaded: boolean; // has the Images list been loaded
   error: string | null; // last known error (if any)

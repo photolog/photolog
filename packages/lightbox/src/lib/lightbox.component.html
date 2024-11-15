@@ -13,6 +13,7 @@
     <plg-slide
       [slide]="slide"
       [plgViewTransition]="activeSlideId()"
+      (contentSettled)="onSlideContentSettled()"
     ></plg-slide>
   }
 </plg-carousel>

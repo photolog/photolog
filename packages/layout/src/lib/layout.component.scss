@@ -1,11 +1,8 @@
-.plg-layout-viewport,
-.plg-layout-viewport .plg-layout {
+.plg-layout {
   display: block;
   position: relative;
-}
 
-.plg-layout-viewport {
-  .plg-layout .plg-layout-item {
+  .plg-layout-item {
     position: absolute;
     contain: layout paint;
     will-change: transform, opacity;

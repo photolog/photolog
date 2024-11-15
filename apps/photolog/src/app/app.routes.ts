@@ -3,6 +3,7 @@ import { Route } from '@angular/router';
 import { provideEffects } from '@ngrx/effects';
 import { provideState } from '@ngrx/store';
 import * as fromImages from '@photolog/data-access-images';
+
 import { queryParamsResolver } from './resolvers/photo-list.resolver';
 import { photoResolver } from './resolvers/photo.resolver';
 
@@ -12,7 +13,7 @@ export const appRoutes: Route[] = [
     runGuardsAndResolvers: 'paramsOrQueryParamsChange',
     providers: [
       provideState(fromImages.PAGES_FEATURE_KEY, fromImages.pagesReducer),
-      provideEffects(fromImages.ImagesEffects, fromImages.PagesEffects),
+      provideEffects(fromImages.ImagePagesEffects),
     ],
     resolve: {
       queryParams: queryParamsResolver,

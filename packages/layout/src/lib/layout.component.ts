@@ -3,7 +3,6 @@ import {
   ChangeDetectionStrategy,
   Component,
   input,
-  signal,
   ViewEncapsulation,
 } from '@angular/core';
 
@@ -13,17 +12,15 @@ import {
   template: `<ng-content
     select="[plgLayoutItem],[plg-layout-item],plg-layout-item"
   ></ng-content>`,
+  styleUrl: './layout.component.scss',
   imports: [CommonModule],
   encapsulation: ViewEncapsulation.None,
   changeDetection: ChangeDetectionStrategy.OnPush,
   host: {
-    class: 'plg-layout plg-justified-layout',
+    class: 'plg-layout',
     '[style.height.px]': 'height()',
-    '[class.plg-justified-layout]': 'justified()',
   },
 })
 export class LayoutComponent {
-  private readonly justified = signal(true);
-
   readonly height = input(0);
 }

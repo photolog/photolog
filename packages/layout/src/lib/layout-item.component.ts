@@ -6,7 +6,7 @@ import {
   input,
   ViewEncapsulation,
 } from '@angular/core';
-import { LayoutBoxGeometryPipe } from './layout-box.pipe';
+import { PositionedRectPipe } from './pipes/positioned-rect.pipe';
 import { LayoutBox } from './types';
 
 @Component({
@@ -21,7 +21,7 @@ import { LayoutBox } from './types';
   },
 })
 export class LayoutItemComponent {
-  private readonly geometryPipe = inject(LayoutBoxGeometryPipe);
+  private readonly geometryPipe = inject(PositionedRectPipe);
 
   readonly geometry = input.required<LayoutBox>();
 

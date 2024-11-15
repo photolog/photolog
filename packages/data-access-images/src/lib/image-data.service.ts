@@ -49,8 +49,12 @@ const convertPicsumImageToPhotologImage = ({
   };
 };
 
+/**
+ * Example data access service that queries the `https://picsum.photos` API
+ * to fetch image metadata that can be laid out within a justified layout.
+ */
 @Injectable({ providedIn: 'root' })
-export class PhotologImageDataService {
+export class ImageDataService {
   private readonly httpClient = inject(HttpClient);
 
   getImages(

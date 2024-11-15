@@ -2,20 +2,20 @@
 import { EntityState, createEntityAdapter } from '@ngrx/entity';
 import { createReducer, on } from '@ngrx/store';
 import * as PhotologActions from './pages.actions';
-import { Page } from './pages.models';
+import { ImagePage } from './pages.models';
 
 export const PAGES_FEATURE_KEY = 'pages';
 
-export interface PagesState extends EntityState<Page> {
+export interface ImagePagesState extends EntityState<ImagePage> {
   selectedId: number | null; // which image of selected page is selected
   error: string | null; // last known error (if any)
 }
 
-export const pagesAdapter = createEntityAdapter<Page>({
+export const pagesAdapter = createEntityAdapter<ImagePage>({
   selectId: (page) => page.index,
 });
 
-export const initialState: PagesState = pagesAdapter.getInitialState({
+export const initialState: ImagePagesState = pagesAdapter.getInitialState({
   selectedId: null,
   error: null,
 });

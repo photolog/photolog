@@ -1,17 +1,17 @@
 import { Pipe, PipeTransform } from '@angular/core';
+import { PositionedRect } from '@photolog/core';
 
 @Pipe({
-  name: 'layoutBoxGeometry',
+  name: 'positionedRect',
   standalone: true,
 })
-export class LayoutBoxGeometryPipe implements PipeTransform {
+export class PositionedRectPipe implements PipeTransform {
   transform({
     width,
     height,
     top,
     left,
-  }: // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  any): Record<string, number | string> {
+  }: PositionedRect): Record<string, string> {
     const translate3d = `translate3d(${left}px, ${top}px, 0px)`;
     return {
       width: `${width}px`,

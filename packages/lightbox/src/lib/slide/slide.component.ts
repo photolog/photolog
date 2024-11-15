@@ -5,6 +5,7 @@ import {
   computed,
   inject,
   input,
+  OnInit,
   output,
   PLATFORM_ID,
   Signal,
@@ -22,14 +23,13 @@ import {
 import { signalSlice } from 'ngxtension/signal-slice';
 import { finalize, switchMap, takeWhile, tap } from 'rxjs';
 
-import { ProgressSpinnerComponent } from '../components/progress-spinner/loading-spinner.component';
-import { PHOTOLOG_LIGHTBOX_CONFIG } from '../config.token';
+import { ProgressSpinnerComponent } from '../common/components/progress-spinner/loading-spinner.component';
+import { PHOTOLOG_LIGHTBOX_CONFIG } from '../lightbox.tokens';
 import { fadeAnimation } from '../lightbox.animationts';
 import {
   createEmptySlide,
   ImageSlide,
   PartialImageSlide,
-  SlideGeometry,
 } from './slide.interface';
 
 const checkSlideHasImage = (slide?: ImageSlide): boolean => {
@@ -40,13 +40,28 @@ const checkSlideHasImage = (slide?: ImageSlide): boolean => {
   ].every(Boolean);
 };
 
+/**
+ * Represents an individual slide in the Photolog Lightbox.
+ *
+ * @remarks
+ * When using the View Transitions API, the target of a view transition
+ * and its parent elements must not be wrapped in an *ngIf block.
+ *
+ * This is important because in the LightboxComponent's view we add the
+ * `ViewTransitionDirective` to each `Slide` component, so that we can capture
+ * view transitions applied to/from other elements in different routes.
+ *
+ * Since we are not wrapping the slides in *ngIf blocks in the current version
+ * of this library, we can ignore this notice. Nevertheless, future versions
+ * may require more complex (deferrable) views that must take this notice
+ * into account.
+ */
 @Component({
   standalone: true,
   selector: 'plg-slide',
   templateUrl: 'slide.component.html',
   styleUrl: 'slide.component.scss',
   imports: [ProgressSpinnerComponent],
-  // NgOptimizedImage,
   encapsulation: ViewEncapsulation.None,
   changeDetection: ChangeDetectionStrategy.OnPush,
   host: {
@@ -61,14 +76,14 @@ const checkSlideHasImage = (slide?: ImageSlide): boolean => {
     }),
   ],
 })
-export class PhotologSlideComponent {
+export class SlideComponent implements OnInit {
   private readonly platformId = inject(PLATFORM_ID);
   private readonly viewportService = inject(ViewportService);
   private readonly lightboxConfig = inject(PHOTOLOG_LIGHTBOX_CONFIG);
 
   readonly externalConfig = input<PartialImageSlide>({}, { alias: 'slide' });
-
-  readonly contentLoaded = output<this>({});
+  readonly contentLoaded = output<this>();
+  readonly contentSettled = output<this>();
 
   private readonly internalConfig = signal<PartialImageSlide>({});
 
@@ -92,26 +107,32 @@ export class PhotologSlideComponent {
     }),
   );
 
-  private readonly isActive$ = toObservable(this.state.active);
+  private readonly active$ = toObservable(this.state.active);
 
-  private readonly loadSlideWhenActive$ = this.isActive$
-    .pipe(
-      takeWhile(() => isPlatformBrowser(this.platformId)),
-      takeWhile((active) => {
-        const hasImage = checkSlideHasImage(this.state());
-        const alreadyLoaded = this.state.loaded();
-        return active && hasImage && !alreadyLoaded;
-      }),
-      tap(() => this.computeGeometry()),
-      switchMap(() => this.loadImage()),
-      takeUntilDestroyed(),
-    )
-    .subscribe();
+  private readonly init$ = this.active$.pipe(
+    takeWhile(() => this.canInitSlide()),
+    tap(() => this.computeGeometry()),
+    switchMap(() => this.loadImage()),
+    takeUntilDestroyed(),
+  );
+
+  ngOnInit() {
+    this.init$.subscribe();
+  }
+
+  private canInitSlide() {
+    const isBrowser = isPlatformBrowser(this.platformId);
+    const hasImage = checkSlideHasImage(this.state());
+    const unsettled = !this.state.loaded();
+    const active = this.state.active();
+    return [isBrowser, hasImage, unsettled, active].every(Boolean);
+  }
 
   private computeGeometry() {
     const { width, height } = this.state.data();
-    const { innerWidth: viewportWidth, innerHeight: viewportHeight } =
-      this.viewportService.getWindow();
+    const viewportHeight = this.viewportService.boundingBox.height;
+    const viewportWidth = this.viewportService.boundingBox.width;
+
     const geometry = scaleImageToFit(
       width,
       height,
@@ -119,7 +140,7 @@ export class PhotologSlideComponent {
       viewportHeight,
     );
 
-    this.updateGeometry(geometry);
+    this.updateState({ geometry } as never);
   }
 
   private loadImage() {
@@ -133,6 +154,7 @@ export class PhotologSlideComponent {
       }),
       finalize(() => {
         this.updateState({ loading: false });
+        this.contentSettled.emit(this);
       }),
     );
   }
@@ -149,11 +171,5 @@ export class PhotologSlideComponent {
 
   private updateState(config: PartialImageSlide) {
     this.internalConfig.update((curr) => deepMerge(curr, config));
-  }
-
-  private updateGeometry(geometry: Partial<SlideGeometry>) {
-    this.internalConfig.update((curr) =>
-      deepMerge(curr, { geometry } as never),
-    );
   }
 }

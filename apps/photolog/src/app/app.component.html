@@ -30,12 +30,12 @@
 <mat-sidenav-container [hasBackdrop]="false">
   <mat-sidenav
     [opened]="isLargeScreen$ | async"
-    [mode]="sidenavMode$ | async"
+    [mode]="(sidenavMode$ | async)!"
+    [disableClose]="(sidenavMode$ | async) === 'side'"
     fixedInViewport
     fixedTopGap="0"
     fixedBottomGap="0"
     #drawer
-    [disableClose]="(sidenavMode$ | async) === 'side'"
   >
     <mat-toolbar class="!h-14">
       <div class="flex gap-2 items-center">
@@ -63,7 +63,7 @@
       <section
         class="nav-groups flex flex-col flex-1 gap-4 border-t border-gray-300 border-opacity-50"
       >
-        @for (group of navItemGroups; track group.name) {
+        @for (group of navGroups; track group.name) {
           <mat-nav-list class="py-4">
             <h3 mat-subheader class="opacity-80">{{ group.name }}</h3>
             @for (link of group.items; track $index) {
