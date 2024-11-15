@@ -1,10 +1,10 @@
 {
-  "name": "photolog-lightbox",
+  "name": "lightbox",
   "$schema": "../../node_modules/nx/schemas/project-schema.json",
   "sourceRoot": "packages/lightbox/src",
   "prefix": "plg",
   "projectType": "library",
-  "tags": [],
+  "tags": ["type:feature"],
   "targets": {
     "build": {
       "executor": "@nx/angular:package",

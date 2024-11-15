@@ -1,10 +1,10 @@
 {
-  "name": "photolog-layout",
+  "name": "layout",
   "$schema": "../../node_modules/nx/schemas/project-schema.json",
   "sourceRoot": "packages/layout/src",
   "prefix": "plg",
   "projectType": "library",
-  "tags": [],
+  "tags": ["type:feature"],
   "targets": {
     "test": {
       "executor": "@nx/jest:jest",
