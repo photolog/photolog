@@ -17,6 +17,16 @@ jobs:
       - uses: pnpm/action-setup@v4
         with:
           version: 9
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: 'pnpm'
+
+      - run: pnpm install --frozen-lockfile
+
+      - uses: nrwl/nx-set-shas@v4
+
       - run: pnpm exec nx build playground -c production
 
       - uses: FirebaseExtended/action-hosting-deploy@v0
