@@ -111,25 +111,25 @@ gh repo clone photolog/photolog
 pnpm exec nx show projects
 ```
 
-### Start playground application
+### Start demo application
 
-The playground application contains code for the [live demo site](https://photolog.dev).
+The `photolog-dev` application contains code for the [live demo site](https://photolog.dev).
 
 To run it in development mode, use:
 
 ```bash
-pnpm exec nx serve playground
+pnpm exec nx serve photolog-dev
 ```
 
 To run it in SSR (server-side rendering) mode, use:
 
 ```bash
-pnpm exec nx serve-ssr playground
+pnpm exec nx serve-ssr photolog-dev
 ```
 
 ### Running unit tests
 
-All workspace packages, including the **playground** app, use Jest as the test runner.
+All workspace packages use Jest as the test runner.
 
 #### Test only what changed
 

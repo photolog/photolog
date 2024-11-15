@@ -1,36 +1,36 @@
 {
-  "name": "playground",
+  "name": "photolog-dev",
   "$schema": "../../node_modules/nx/schemas/project-schema.json",
   "projectType": "application",
   "prefix": "app",
-  "sourceRoot": "apps/photolog/src",
+  "sourceRoot": "packages/photolog-dev/src",
   "tags": [],
   "targets": {
     "build": {
       "executor": "@angular-devkit/build-angular:application",
       "outputs": ["{options.outputPath}"],
       "options": {
-        "outputPath": "dist/apps/photolog",
-        "index": "apps/photolog/src/index.html",
-        "browser": "apps/photolog/src/main.ts",
+        "outputPath": "dist/packages/photolog-dev",
+        "index": "packages/photolog-dev/src/index.html",
+        "browser": "packages/photolog-dev/src/main.ts",
         "polyfills": ["zone.js"],
-        "tsConfig": "apps/photolog/tsconfig.app.json",
+        "tsConfig": "packages/photolog-dev/tsconfig.app.json",
         "inlineStyleLanguage": "scss",
         "assets": [
           {
             "glob": "**/*",
-            "input": "apps/photolog/public"
+            "input": "packages/photolog-dev/public"
           }
         ],
         "styles": [
           "@angular/material/prebuilt-themes/azure-blue.css",
-          "apps/photolog/src/styles.scss"
+          "packages/photolog-dev/src/styles.scss"
         ],
         "scripts": [],
-        "server": "apps/photolog/src/main.server.ts",
+        "server": "packages/photolog-dev/src/main.server.ts",
         "prerender": true,
         "ssr": {
-          "entry": "apps/photolog/server.ts"
+          "entry": "packages/photolog-dev/server.ts"
         }
       },
       "configurations": {
@@ -61,10 +61,10 @@
       "executor": "@angular-devkit/build-angular:dev-server",
       "configurations": {
         "production": {
-          "buildTarget": "playground:build:production"
+          "buildTarget": "photolog-dev:build:production"
         },
         "development": {
-          "buildTarget": "playground:build:development"
+          "buildTarget": "photolog-dev:build:development"
         }
       },
       "defaultConfiguration": "development"
@@ -72,7 +72,7 @@
     "extract-i18n": {
       "executor": "@angular-devkit/build-angular:extract-i18n",
       "options": {
-        "buildTarget": "playground:build"
+        "buildTarget": "photolog-dev:build"
       }
     },
     "lint": {
@@ -82,21 +82,31 @@
       "executor": "@nx/jest:jest",
       "outputs": ["{workspaceRoot}/coverage/{projectRoot}"],
       "options": {
-        "jestConfig": "apps/photolog/jest.config.ts"
+        "jestConfig": "packages/photolog-dev/jest.config.ts"
       }
     },
     "serve-static": {
       "executor": "@nx/web:file-server",
       "options": {
-        "buildTarget": "playground:build:prod",
-        "staticFilePath": "dist/apps/photolog/browser",
+        "buildTarget": "photolog-dev:build:prod",
+        "staticFilePath": "dist/packages/photolog-dev/browser",
         "spa": true
       }
     },
-
+    "serve-ssr": {
+      "executor": "nx:run-commands",
+      "dependsOn": ["photolog-dev:build"],
+      "options": {
+        "commands": [
+          {
+            "command": "node dist/packages/photolog-dev/server/server.mjs"
+          }
+        ]
+      }
+    },
     "deploy": {
       "executor": "nx:run-commands",
-      "dependsOn": ["playground:build"],
+      "dependsOn": ["photolog-dev:build"],
       "cache": false,
       "options": {
         "commands": [

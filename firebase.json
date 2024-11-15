@@ -1,6 +1,6 @@
 {
   "hosting": {
-    "public": "dist/apps/photolog/browser",
+    "public": "dist/packages/photolog-dev/browser",
     "ignore": ["firebase.json", "**/.*", "**/node_modules/**"],
     "cleanUrls": true,
     "trailingSlash": false,

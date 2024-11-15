@@ -24,7 +24,11 @@ import {
   ViewportService,
   ViewTransitionDirective,
 } from '@photolog/core';
-import { LoadPageProps, ImagePage, ImagePagesFacade } from '@photolog/data-access-images';
+import {
+  LoadPageProps,
+  ImagePage,
+  ImagePagesFacade,
+} from '@photolog/data-access-images';
 import {
   LayoutImageComponent,
   LayoutModule,
