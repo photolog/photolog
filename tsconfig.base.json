@@ -17,7 +17,7 @@
     "paths": {
       "@photolog/core": ["packages/core/src/index.ts"],
       "@photolog/data-access-images": [
-        "packages/data-access-images/src/index.ts"
+        "packages/photolog-dev/data-access-images/src/index.ts"
       ],
       "@photolog/layout": ["packages/layout/src/index.ts"],
       "@photolog/lightbox": ["packages/lightbox/src/index.ts"]

@@ -1,10 +1,10 @@
 # Photolog
->
+
 > This project is still in the experimental stage and may introduce breaking changes without notice.
 
 ![Photolog image gallery with routed lightbox](assets/default-cover-animated.avif)
 
-[Live Demo](https://photolog.dev "Link to see Photolog components in action")
+[Live Demo](https://photolog.dev 'Link to see Photolog components in action')
 
 This repository contains components and utilities for building dynamic, responsive, and visually engaging photo-viewing experiences in Angular.
 
@@ -38,15 +38,15 @@ Generate and render aesthetically pleasing image layouts by organizing images in
 
 - **Justified Layout**
 
-    Automatically arranges images into rows of equal height for a polished and balanced design.
+  Automatically arranges images into rows of equal height for a polished and balanced design.
 
 - **Flexible Configuration**
 
-    Fine-tune row height, tolerance, spacing, and other parameters to suit your needs.
+  Fine-tune row height, tolerance, spacing, and other parameters to suit your needs.
 
 - **60fps Scrolling**
 
-    Optimized for 60fps scrolling and efficiently handles large sets of images thanks to deferrable views.
+  Optimized for 60fps scrolling and efficiently handles large sets of images thanks to deferrable views.
 
 > For now, this library uses [flickr's justified-layout](https://flickr.github.io/justified-layout/) package under the hood. But I am interested in removing this dependency entirely and replace it a with built-in, tailored solution.
 
@@ -58,23 +58,23 @@ Create lightbox experiences with smooth transitions between preview images and t
 
 - **60fps Single-Document Transitions**
 
-    Seamlessly animates photos as they transition between routes with 60fps performance.
+  Seamlessly animates photos as they transition between routes with 60fps performance.
 
 - **Dynamic Slide Animation**
 
-    Smoothly scales images to fit the viewport.
+  Smoothly scales images to fit the viewport.
 
 - **Responsive Design**:
 
-    Maintains aspect ratio while fitting images within the viewport.
+  Maintains aspect ratio while fitting images within the viewport.
 
 - **SEO-friendly**
 
-    Enhanced search engine optimization through route-based navigation (avoiding hash fragments, which aren't crawled by search engines).
+  Enhanced search engine optimization through route-based navigation (avoiding hash fragments, which aren't crawled by search engines).
 
 - **Precise Element Positioning**:
 
-    Utilities to calculate element positions relative to the viewport.
+  Utilities to calculate element positions relative to the viewport.
 
 > **IMPORTANT NOTICE**
 >
@@ -87,7 +87,7 @@ TBD
 
 ## Local development
 
-This repository is a [nx](https://nx.dev/getting-started/intro) workspace and uses [pnpm]((https://pnpm.io)) as package manager. If you don't have **pnpm** installed yet, follow these [install instructions](https://pnpm.io/installation)
+This repository is a [nx](https://nx.dev/getting-started/intro) workspace and uses [pnpm](<(https://pnpm.io)>) as package manager. If you don't have **pnpm** installed yet, follow these [install instructions](https://pnpm.io/installation)
 
 Optionally, you may also [install the nx CLI globally](https://nx.dev/getting-started/installation#installing-nx-globally). This allows you to replace the `pnpm exec nx` part of each command with `nx`. For example `pnpm exec nx serve app` would become `nx serve app`.
 
@@ -139,13 +139,13 @@ This command compares the current state of this workspace (git HEAD) with the ba
 pnpm exec nx affected -t test
 ```
 
-#### Test workspace  
+#### Test workspace
 
 ```bash
 pnpm exec nx run-many -t test
 ```
 
-#### Test Photolog feature  
+#### Test Photolog feature
 
 ```bash
 # Test layout feature
@@ -228,7 +228,7 @@ git checkout -b fix-typos-in-interface
 
 ### 2. Make your changes
 
-> If your changes ***are not purely descriptive*** (e.g documentation, spelling errors, refactoring), you must add tests for these changes.
+> If your changes **_are not purely descriptive_** (e.g documentation, spelling errors, refactoring), you must add tests for these changes.
 
 Before:
 

@@ -1,8 +1,9 @@
 export default {
   displayName: 'data-access-images',
-  preset: '../../jest.preset.js',
+  preset: '../../../jest.preset.js',
   setupFilesAfterEnv: ['<rootDir>/src/test-setup.ts'],
-  coverageDirectory: '../../coverage/packages/data-access-images',
+  coverageDirectory:
+    '../../../coverage/packages/photolog-dev/data-access-images',
   transform: {
     '^.+\\.(ts|mjs|js|html)$': [
       'jest-preset-angular',

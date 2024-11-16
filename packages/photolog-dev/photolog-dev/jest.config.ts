@@ -1,8 +1,8 @@
 export default {
-  displayName: 'photolog',
-  preset: '../../jest.preset.js',
+  displayName: 'photolog-dev',
+  preset: '../../../jest.preset.js',
   setupFilesAfterEnv: ['<rootDir>/src/test-setup.ts'],
-  coverageDirectory: '../../coverage/packages/photolog-dev',
+  coverageDirectory: '../../../coverage/packages/photolog-dev',
   transform: {
     '^.+\\.(ts|mjs|js|html)$': [
       'jest-preset-angular',

@@ -1,5 +1,9 @@
 import { createFeatureSelector, createSelector } from '@ngrx/store';
-import { PAGES_FEATURE_KEY, pagesAdapter, ImagePagesState } from './pages.reducer';
+import {
+  PAGES_FEATURE_KEY,
+  pagesAdapter,
+  ImagePagesState,
+} from './pages.reducer';
 // import { selectAllImages } from '../images/images.selectors';
 
 export const selectPagesState =

@@ -2,7 +2,7 @@
 
 ![Photolog image gallery with routed lightbox](../../assets/default-cover-animated.avif)
 
-[Live Demo](https://photolog.dev "Link to see Photolog components in action")
+[Live Demo](https://photolog.dev 'Link to see Photolog components in action')
 
 Create lightbox experiences with smooth transitions between preview images and their routed, full-screen views.
 
@@ -10,23 +10,23 @@ Create lightbox experiences with smooth transitions between preview images and t
 
 - **60fps Single-Document Transitions**
 
-    Seamlessly animates photos as they transition between routes with 60fps performance.
+  Seamlessly animates photos as they transition between routes with 60fps performance.
 
 - **Dynamic Slide Animation**
 
-    Smoothly scales images to fit the viewport.
+  Smoothly scales images to fit the viewport.
 
 - **Responsive Design**:
 
-    Maintains aspect ratio while fitting images within the viewport.
+  Maintains aspect ratio while fitting images within the viewport.
 
 - **SEO-friendly**
 
-    Enhanced search engine optimization through route-based navigation (avoiding hash fragments, which aren't crawled by search engines).
+  Enhanced search engine optimization through route-based navigation (avoiding hash fragments, which aren't crawled by search engines).
 
 - **Precise Element Positioning**:
 
-    Utilities to calculate element positions relative to the viewport.
+  Utilities to calculate element positions relative to the viewport.
 
 > **IMPORTANT NOTICE**
 >
