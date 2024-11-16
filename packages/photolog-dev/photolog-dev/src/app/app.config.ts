@@ -23,10 +23,10 @@ import {
   round,
   scaleImageToFit,
 } from '@photolog/core';
+import { generateThumbUrl } from '@photolog/data-access-images';
 import { withLayout } from '@photolog/layout';
 // eslint-disable-next-line @nx/enforce-module-boundaries
 import { SlideSourceResolver, withLightbox } from '@photolog/lightbox';
-import { generateThumbUrl } from 'packages/data-access-images/src/lib/utils/picsum-api';
 import { appRoutes } from './app.routes';
 
 const photologSlideSourceResolver: SlideSourceResolver<PhotologImage> = (
