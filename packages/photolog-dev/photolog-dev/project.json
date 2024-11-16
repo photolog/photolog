@@ -3,7 +3,7 @@
   "$schema": "../../node_modules/nx/schemas/project-schema.json",
   "projectType": "application",
   "prefix": "app",
-  "sourceRoot": "packages/photolog-dev/src",
+  "sourceRoot": "packages/photolog-dev/photolog-dev/src",
   "tags": [],
   "targets": {
     "build": {
@@ -11,26 +11,26 @@
       "outputs": ["{options.outputPath}"],
       "options": {
         "outputPath": "dist/packages/photolog-dev",
-        "index": "packages/photolog-dev/src/index.html",
-        "browser": "packages/photolog-dev/src/main.ts",
+        "index": "packages/photolog-dev/photolog-dev/src/index.html",
+        "browser": "packages/photolog-dev/photolog-dev/src/main.ts",
         "polyfills": ["zone.js"],
-        "tsConfig": "packages/photolog-dev/tsconfig.app.json",
+        "tsConfig": "packages/photolog-dev/photolog-dev/tsconfig.app.json",
         "inlineStyleLanguage": "scss",
         "assets": [
           {
             "glob": "**/*",
-            "input": "packages/photolog-dev/public"
+            "input": "packages/photolog-dev/photolog-dev/public"
           }
         ],
         "styles": [
           "@angular/material/prebuilt-themes/azure-blue.css",
-          "packages/photolog-dev/src/styles.scss"
+          "packages/photolog-dev/photolog-dev/src/styles.scss"
         ],
         "scripts": [],
-        "server": "packages/photolog-dev/src/main.server.ts",
+        "server": "packages/photolog-dev/photolog-dev/src/main.server.ts",
         "prerender": true,
         "ssr": {
-          "entry": "packages/photolog-dev/server.ts"
+          "entry": "packages/photolog-dev/photolog-dev/server.ts"
         }
       },
       "configurations": {
@@ -82,7 +82,7 @@
       "executor": "@nx/jest:jest",
       "outputs": ["{workspaceRoot}/coverage/{projectRoot}"],
       "options": {
-        "jestConfig": "packages/photolog-dev/jest.config.ts"
+        "jestConfig": "packages/photolog-dev/photolog-dev/jest.config.ts"
       }
     },
     "serve-static": {
